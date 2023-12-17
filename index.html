@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GDXSC5Y2BD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GDXSC5Y2BD');
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<script src="./files/head.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<meta name="keywords" content="MIT,Microsoft Research, Machine Learning,Rank Reduction,Computer Science,Machine,Artificial,Intelligence">
+
+<title>The Truth Is In There: Improving  Reasoning in Language Models with Layer-Selective Rank Reduction</title>
+<link rel="stylesheet" href="./files/font.css">
+<link rel="stylesheet" href="./files/main.css">
+
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.rawgit.com/dreampulse/computer-modern-web-font/master/fonts.css">
+<style>
+body {
+  font-family: "Computer Modern Serif", serif;
+  font-size: 14pt;
+}
+
+
+* {padding:0;margin:0;box-sizing:border-box;}
+#video {
+  position: relative;
+  padding-bottom: 45%; /* 16:9 */
+  height: 0;
+}
+#video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100%;
+  transform: translateX(12.5%);
+}
+
+</style>
+
+  <style type="text/css">/**
+ * Style sheet used by new LibX tooltip code
+ */
+
+/* We insert a <div> with libx-tooltip style under the body.
+ * This will inherit body's style - we can't afford to inherit undesirable 
+ * styles and we must redefine what we need.  OTOH, some things, e.g.
+ * font-size, might be ok to be inherited to stay within the page's tone.
+ */
+.libx-tooltip {
+    display: none;
+    overflow: visible;
+    padding: 5px;
+    z-index: 100;
+    background-color: #eee;
+    color: #000;
+    font-weight: normal;
+    font-style: normal;
+    text-align: left;
+    border: 2px solid #666;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.libx-tooltip p {
+    /* override default 1em margin to keep paragraphs inside a tooltip closer together. */
+    margin: .2em;
+}
+</style><style type="text/css">/**
+ * Style sheet used by LibX autolinking code
+ */
+.libx-autolink {
+}
+
+</style>
+
+</head>
+
+  <body>
+
+    <div class="outercontainer">
+      <div class="container">
+
+        <div class="content project_title">
+          <center>
+          <br>
+          <h2>The Truth Is In There: Improving  Reasoning in Language Models <br>with Layer-Selective Rank Reduction</h2>
+          <div class="authors">
+            <a href="https://pratyushasharma.github.io/">Pratyusha Sharma</a>,
+            <a href="https://www.jordantash.com/">Jordan Ash*</a>, and
+            <a href="https://dipendramisra.com/">Dipendra Misra*</a>
+          </div>
+          <!-- <br> -->
+          <!-- <a href="https://arxiv.org/abs/2106.02039">Paper</a> -->
+           <!-- <a href="./trajectory-transformer-neurips-2021.pdf">Paper</a> -->
+          <div>
+            <span class="tag">
+              <a href="https://arxiv.org/abs/2106.02039">Paper</a>&nbsp;
+              <!-- <a href="./trajectory-transformer-neurips-2021.pdf">Paper</a>&nbsp; -->
+              <a href="https://github.com/JannerM/trajectory-transformer">Code</a>&nbsp;
+              <a href="files/bib.txt">BibTex</a>&nbsp;
+            </span>
+          </div>
+        </center>
+        </div>
+
+        <br><br>
+
+        <div class="content">
+          <center>
+          <div class="text">
+            <p>
+              <div class="title"><b>Summary</b></div>
+<!--               <b>
+                <font size="5">Summary</font>
+              </b> -->
+              <!-- &nbsp; -->
+              Transformer-based Large Language Models (LLMs) have become a fixture in modern machine learning. <br>
+              Correspondingly, significant resources are allocated towards research that aims to further advance this technology, <br>typically resulting in models of increasing size that are trained on increasing amounts of data. <br>
+              This work, however, demonstrates the surprising result that it is often possible to improve the performance of LLMs by <br>simply removing higher-order components of their constituent weight matrices in the multi-layer perception (MLP) <br>layers. This simple intervention, which we call LAyer-SElective Rank reduction LASER, can be done on a model after <br>training has completed, and requires no additional parameters or data. LASER can dramatically boost predictive <br>performance on question-answering tasks and across various modalities for which Transformers are used. <br>
+          </p>
+          </div>
+        </center>
+        </div>
+        <br>
+        <br>
+
+        <center>
+        <img width=60% src="main.png"></img>
+        <br>
+        <br>
+        <i>LAyer SElective Rank reduction (LASER) replaces a specific weight matrix W of the Transformer model by its rank-$k$ <br>approximation and observes the change in the behavior of the model. We find that this rank approximation, especially for MLP <br>weights at the latter layers of the model, often offers surprising benefits to model performance.</i>
+        </center>
+        <p>
+        <br><br>
+
+
+        <div class="content">
+          <div class="text">
+          <center>
+            <p>
+              <div class="title"><b>Layer Selective Rank Reduction Improves Generalization</b></div>
+<!--               <b>
+                <font size="5">Layer Selective Rank Reduction Improves Generalization</font>
+              </b> -->
+              <!-- &nbsp; -->
+              <!-- Predictive dynamics models often have excellent single-step error, but poor long-horizon accuracy due to compounding errors.
+              We show that Transformers are more reliable long-horizon predictors than state-of-the-art single-step models, even in continuous Markovian domains. -->
+          </p>
+          <br>
+          <br>
+            <img width=40% src="loss.png"></img>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <i>The effect of rank reduction across different layer types is not uniform. This figure shows the effect of rank <br>reduction for GPT-J as studied on the CounterFact dataset. The dashed line is the base model loss. In the attention <br>layers (key, query, value, out matrices), while its clear matrices could be significantly rank-reduced without damaging <br>the learned hypothesis, there is very little performance increase. Alternatively, for the multi-layer perceptron (MLP) <br>layers, rank reduction goes from uniformly harming to improving the model's performance (at layer 20).</i>
+          </center>
+          <br>
+          </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="content">
+          <div class="text">
+          <center>
+            <p>
+              <div class="title"><b>LASER offers a kind of denoising procedure that makes weakly learned facts accessible</b></div>
+   <!--            <b>
+                <font size="5.0">
+                Beam search as trajectory optimizer
+              </font>
+              </b> -->
+               <!-- . -->
+              <!-- Various control settings can be reduced to slight modifications of beam search with a sequence model. -->
+              <ul>
+                <br>
+                  <img width=40% src="corrected.png"></img>
+                  <img width=11% src="corrected-2.png"></img>
+                <br>
+                <li>Which datapoints benefit from LASER? We analyze how frequently in the training data ``corrected'' facts occur. <br> GPT-J is an ideal test bed for such analysis since its training data, the PILE dataset, is publicly available. <br> (a) For GPT-J evaluated on Counterfact we retrieve all the datapoints in the training data that contain a mention of <br>both the entity of interest and the answer that correspond to each sample in CounterFact. (b) A plot depicting the <br>cumulative top-10 accuracy of the model on all datapoints that occur in the training data less than or equal to <br>the frequency indicated on the x-axis. The plot looks at how the accuracy changes before and after LASER. (c) The <br>largest boost in performance occurs for low-frequency samples.  Demonstrates the amount of boost offered by LASER for<br> data binned by the frequency with which corresponding facts occur in the training data. Maximal improvements in <br>accuracy are from datapoints that have less-frequent occurrences in the training data as opposed to those that occur<br> more frequently.</li>
+                <br>
+                <br>
+              </ul>
+          </p>
+          </center>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+
+<br><br><br><br>  
+
+
+</div></body></html>

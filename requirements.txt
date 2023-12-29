@@ -1,0 +1,9 @@
+matplotlib
+pandas
+tokenizers
+tqdm
+transformers==4.34.1
+line-profiler
+nltk
+datasets
+

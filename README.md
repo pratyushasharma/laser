@@ -14,7 +14,7 @@ LASER stands for **LA**yer **SE**lective **R**ank-Reduction, and is an intervent
 
 LASER modifies the weight matrix, thereby, allowing us to see the changes as a result and build understanding of what these matrices contain about the problem. We originally wanted to prod the transformer architecture this way, but to our surprise found significant gains in accuracy on various LLM tasks, when these reductions were performed. The paper above presents various results related to evaluating LASER on 3 different LLMs and several LLM benchmark. This repository contains the code to reproduce these results.
 
-## How to run a sample code?
+## How to run a sample code
 
 We first discuss installing the code and then discuss how to run an experiment.
 
@@ -31,4 +31,3 @@ At the moment, each setup is its own file. To run an experiment that performs a 
 here _lnum_ is &ell;, _lname_ is &tau;, and _rate_ is related to &rho; by &rho; = 1 - 0.1 * rate. The rate is a value between [0, 10.0] and measures how much rank to retain. The use of rate is for legacy reasons and we will refactor the code to directly use &rho; in the future. 
 
 Note that the above experiments will save accuracies and log-losses for each datapoint. In some files, one has to take the validation set (first 20% examples) and do hyperparameter selection separately, and then compute the accuracy on the test set (remaining 80% examples) with the chose hyperparameters. In the future, we will refactor the code to make this very easy to do.
-

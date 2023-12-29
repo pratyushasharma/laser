@@ -22,7 +22,7 @@ To install the experiment, please install the pip file. We chiefly just need pyt
 
 > pip3 install -r requirements.txt
 
-### Instalation
+### Installation
 
 At the moment, each setup is its own file. To run an experiment that performs a single LASER transformer to GPTJ on the Counterfact dataset, you can run:
  

@@ -18,7 +18,7 @@ LASER modifies the weight matrix, thereby, allowing us to see the changes as a r
 
 We first discuss installing the code and then discuss how to run an experiment.
 
-To install the experiment, please install the pip file. We chiefly just need pytorch and huggingface datasets package. It might be a good idea to create a conda environment.
+To install the experiment, please install the pip file. We chiefly just need pytorch and the datasets and transformers package from huggingface. It might be a good idea to create a conda environment.
 
 > pip3 install -r requirements.txt
 

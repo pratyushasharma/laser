@@ -4,7 +4,7 @@ This repository contains code for the LASER paper _"The Truth is in There: Impro
 
 **Website:** [https://pratyushasharma.github.io/laser/](https://pratyushasharma.github.io/laser/)
 
-**This is an early development release. We will do a major refactoring in first half of Jan 2024, to make the code more easy to use, and extend to other settings.** 
+**This is an early development release. We will do a major refactoring in the first half of Jan 2024, to make the code more easy to use, and extend to other settings.** 
 
 We welcome issues and pull requests. If you report a new result using LASER on a given LLM and NLP task, then please feel free to issue a pull request and we will add it to the leaderboard on the website and acknowledge the result to you.
 

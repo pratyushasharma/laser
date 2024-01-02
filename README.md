@@ -1,12 +1,12 @@
 # LASER: Layer Selective Rank Reduction
 
-This repository contains code for the LASER paper _"The Truth is in There: Improving Reasoning in Language Models with Layer-Selective Rank Reduction"_, Pratyusha Sharma, Jordan T. Ash, and Dipendra Misra, [arXiv 2023](https://arxiv.org/pdf/2312.13558.pdf). 
+This repository contains code for the LASER paper _"The Truth is in There: Improving Reasoning in Language Models with Layer-Selective Rank Reduction," by Pratyusha Sharma, Jordan T. Ash, and Dipendra Misra [arXiv 2023](https://arxiv.org/pdf/2312.13558.pdf). 
 
 **Website:** [https://pratyushasharma.github.io/laser/](https://pratyushasharma.github.io/laser/)
 
-**This is an early development release. We will do a major refactoring in the first half of Jan 2024, to make the code more easy to use, and extend to other settings.** 
+**This is an early development release. We will do a major refactor in the first half of Jan 2024 to make the code easier to use and more flexible.** 
 
-We welcome issues and pull requests. If you report a new result using LASER on a given LLM and NLP task, then please feel free to issue a pull request and we will add it to the leaderboard on the website and acknowledge the result to you.
+We welcome issues and pull requests. If you report a new result using LASER on a given LLM and NLP task, please issue a pull request and we'll add it to the website's leaderboard.
 
 ## What is LASER?
 

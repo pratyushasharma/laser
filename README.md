@@ -23,15 +23,32 @@ We first discuss installing the code and then discuss how to run an experiment.
 
 To install the experiment, please install the pip file. We chiefly just need pytorch and the datasets and transformers package from huggingface. It might be a good idea to create a conda environment.
 
-> pip3 install -r requirements.txt
+```bash
+pip3 install -r requirements.txt
+```
 
 ### Installation
 
 At the moment, each setup is its own file. To run an experiment that performs a single LASER transformer to GPTJ on the Counterfact dataset, you can run:
- 
-> python3 intervention_gptj_counterfact.py --lname fc_in --rate 9.9 --lnum 26
 
-here _lnum_ is &ell;, _lname_ is &tau;, and _rate_ is related to &rho; by &rho; = 1 - 0.1 * rate. The rate is a value between [0, 10.0] and measures how much rank to retain. The use of rate is for legacy reasons and we will refactor the code to directly use &rho; in the future. 
+```bash
+python3 intervention_gptj_counterfact.py --lname fc_in --rate 9.9 --lnum 26
+```
+
+here _lnum_ is &ell;, _lname_ is &tau;, and _rate_ is related to &rho; by &rho; = 1 - 0.1 * rate. The rate is a value between [0, 10.0] and measures how much rank to retain. The use of rate is for legacy reasons and we will refactor the code to directly use &rho; in the future. The mapping we use is:
+
+**lname** | **description**| 
+--- | --- |
+fc_in | first layer of MLP |
+fc_out | second layer of MLP | 
+fc_up | a third weight matrix in some LLM, used for Hadamard multiplication | 
+k_proj | key matrix in self attention | 
+v_proj | value matrix in self attention | 
+q_proj | query matrix in self attention | 
+out_proj | output matrix in self attention |
+--- | --- |
+
+**Please do note that if you add a new LLM, then you have to adapt the laser package to implement mappings.** For example, see the mappings for Llama2 [here](https://github.com/pratyushasharma/laser/blob/main/src/laser/llama2_laser.py#L22). You also need to update the Laser wrapper to work with the new LLM [here](https://github.com/pratyushasharma/laser/blob/main/src/laser/LaserWrapper.py#L20).
 
 Note that the above experiments will save accuracies and log-losses for each datapoint. In some files, one has to take the validation set (first 20% examples) and do hyperparameter selection separately, and then compute the accuracy on the test set (remaining 80% examples) with the chose hyperparameters. In the future, we will refactor the code to make this very easy to do.
 

@@ -5,6 +5,14 @@ import pickle
 import argparse
 import urllib.request
 
+
+def add_dp(question, answer, dataset):
+    dataset.append(
+        {"question": question.strip(),
+         "gold-answer": " " + answer.strip()
+         })
+
+
 parser = argparse.ArgumentParser(description='Process Arguments for experiments with GPTJ LLM on CounterFact')
 parser.add_argument('--path', type=str, default="./counterfact", help='place where to save the dataset')
 args = parser.parse_args()
@@ -31,11 +39,11 @@ for dp in orig_dataset:
     assert len(paraphrases) == 2, f"Expected 2 paraphrases per questions but instead found {len(paraphrases)}."
     answer = dp["requested_rewrite"]["target_true"]["str"]
 
-    dataset.append((question, answer))
+    add_dp(question, answer, dataset)
     for paraphrase in paraphrases:
-        dataset.append((paraphrase.strip(), answer.strip()))
+        add_dp(paraphrase, answer, dataset)
 
 print(f"After processing, the new dataset has {len(dataset)} many datapoints.")
 
-with open(args.save_path, "wb") as f:
+with open(args.path, "wb") as f:
     pickle.dump(dataset, f)

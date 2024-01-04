@@ -61,13 +61,15 @@ The code for performing laser is inside the `laser` package. We use PyTorch to d
 
 If you find this codebase useful, then please cite the following paper. Additionally, feel free to send a PR or an email and we will cite your result/paper on the leaderboard.
 
-> @article{sharma2023truth,
-> 
->  title={The Truth is in There: Improving Reasoning in Language Models with Layer-Selective Rank Reduction},
->
->  author={Sharma, Pratyusha and Ash, Jordan T and Misra, Dipendra},
->
-> journal={arXiv preprint arXiv:2312.13558},
->
->   year={2023}
-> }
+```bash
+@article{sharma2023truth,
+ 
+  title={The Truth is in There: Improving Reasoning in Language Models with Layer-Selective Rank Reduction},
+
+  author={Sharma, Pratyusha and Ash, Jordan T and Misra, Dipendra},
+
+ journal={arXiv preprint arXiv:2312.13558},
+
+   year={2023}
+ }
+```

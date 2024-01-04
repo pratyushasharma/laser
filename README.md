@@ -46,7 +46,6 @@ k_proj | key matrix in self attention |
 v_proj | value matrix in self attention | 
 q_proj | query matrix in self attention | 
 out_proj | output matrix in self attention |
---- | --- |
 
 **Please do note that if you add a new LLM, then you have to adapt the laser package to implement mappings.** For example, see the mappings for Llama2 [here](https://github.com/pratyushasharma/laser/blob/main/src/laser/llama2_laser.py#L22). You also need to update the Laser wrapper to work with the new LLM [here](https://github.com/pratyushasharma/laser/blob/main/src/laser/LaserWrapper.py#L20).
 

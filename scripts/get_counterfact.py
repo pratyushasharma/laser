@@ -8,8 +8,8 @@ import urllib.request
 
 def add_dp(question, answer, dataset):
     dataset.append(
-        {"question": question.strip(),
-         "gold-answer": " " + answer.strip()
+        {"question": question,
+         "gold-answer": " " + answer
          })
 
 

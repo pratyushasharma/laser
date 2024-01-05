@@ -43,7 +43,7 @@ here _lnum_ is &ell;, _lname_ is &tau;, and _rate_ is related to &rho; by &rho; 
 --- | --- |
 fc_in | first layer of MLP |
 fc_out | second layer of MLP | 
-fc_up | a third weight matrix in some LLM, used for Hadamard multiplication | 
+fc_up | a third MLP weight matrix in some LLM, used for Hadamard multiplication | 
 k_proj | key matrix in self attention | 
 v_proj | value matrix in self attention | 
 q_proj | query matrix in self attention | 

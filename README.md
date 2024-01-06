@@ -12,12 +12,11 @@ We welcome issues and pull requests. If you report a new result using LASER on a
 
 ## What is LASER?
 
-LASER stands for **LA**yer **SE**lective **R**ank-Reduction, and is an intervention where we replace a selected weight matrix in the transformer architecture of an LLM with its low-rank approximation. A single LASER transformation consists of 3 hyperparameters: the layer number to modify (&ell;) such as 16th layer, the parameter type (&tau;) such as the first MLP layer, and the fraction of the maximum rank to retain (&rho;) such as 0.01 fraction of the rank. We can write this transformation as (&ell;, &tau;, &rho;) and we can stack these transformations and apply them in parallel. The low-rank approximation is performed using SVD. Figure below from our paper shows an illustration.
+LASER stands for **LA**yer **SE**lective **R**ank-Reduction, and is an intervention where we replace a selected weight matrix in the transformer architecture of an LLM with its low-rank approximation. A single LASER transformation consists of 3 hyperparameters: the layer number to modify (&ell;) such as 16th layer, the parameter type (&tau;) such as the first MLP layer, and the fraction of the maximum rank to retain (&rho;) such as 0.01 fraction of the rank. We can write this transformation as (&ell;, &tau;, &rho;) and we can compose these transformations and apply them in parallel. The low-rank approximation is performed using SVD. Figure below from our paper shows an illustration.
 
 ![LASER illustration](https://pratyushasharma.github.io/laser/main.png)
 
-
-LASER modifies the weight matrix, thereby, allowing us to see the changes as a result and build understanding of what these matrices contain about the problem. We originally wanted to prod the transformer architecture this way, but to our surprise found significant gains in accuracy on various LLM tasks, when these reductions were performed. The paper above presents various results related to evaluating LASER on 3 different LLMs and several LLM benchmark. This repository contains the code to reproduce these results.
+LASER can give significant performance improvements on question-answerting tasks without additional model training. Our paper presents various results related to evaluating LASER on 3 different LLMs and several LLM benchmarks. This repository contains the code to reproduce these results.
 
 ## How to run a sample code
 

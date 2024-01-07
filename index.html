@@ -1,213 +1,507 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>LLF Bench</title>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GDXSC5Y2BD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Bootstrap Core CSS -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
-  gtag('config', 'G-GDXSC5Y2BD');
-</script>
+    <!-- Fonts -->
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script src="js/jquery-1.10.2.js"></script>
 
-<script src="./files/head.js"></script>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<meta name="keywords" content="MIT,Microsoft Research, Machine Learning,Rank Reduction,Computer Science,Machine,Artificial,Intelligence">
-
-<title>The Truth Is In There: Improving  Reasoning in Language Models with Layer-Selective Rank Reduction</title>
-<link rel="stylesheet" href="./files/font.css">
-<link rel="stylesheet" href="./files/main.css">
-
-<link rel="stylesheet" type="text/css"
-    href="https://cdn.rawgit.com/dreampulse/computer-modern-web-font/master/fonts.css">
-<style>
-body {
-  font-family: "Computer Modern Serif", serif;
-  font-size: 14pt;
-}
-
-
-* {padding:0;margin:0;box-sizing:border-box;}
-#video {
-  position: relative;
-  padding-bottom: 45%; /* 16:9 */
-  height: 0;
-}
-#video iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 80%;
-  height: 100%;
-  transform: translateX(12.5%);
-}
-
-</style>
-
-  <style type="text/css">/**
- * Style sheet used by new LibX tooltip code
- */
-
-/* We insert a <div> with libx-tooltip style under the body.
- * This will inherit body's style - we can't afford to inherit undesirable 
- * styles and we must redefine what we need.  OTOH, some things, e.g.
- * font-size, might be ok to be inherited to stay within the page's tone.
- */
-.libx-tooltip {
-    display: none;
-    overflow: visible;
-    padding: 5px;
-    z-index: 100;
-    background-color: #eee;
-    color: #000;
-    font-weight: normal;
-    font-style: normal;
-    text-align: left;
-    border: 2px solid #666;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-.libx-tooltip p {
-    /* override default 1em margin to keep paragraphs inside a tooltip closer together. */
-    margin: .2em;
-}
-</style><style type="text/css">/**
- * Style sheet used by LibX autolinking code
- */
-.libx-autolink {
-}
-
-</style>
+    <!-- Custom Theme CSS -->
+    <link href="css/grayscale.css" rel="stylesheet">
+    <link href="css/timeline.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
 
 </head>
 
-  <body>
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
 
-    <div class="outercontainer">
-      <div class="container">
+        <!-- Some js animation -->
+    <script>
+        $(document).ready(function () {
+                $("#talks_container").animate( {height: 15+'%'} );
+        });
+   </script>
 
-        <div class="content project_title">
-          <center>
-          <br>
-          <h2>The Truth Is In There: Improving  Reasoning in Language Models <br>with Layer-Selective Rank Reduction</h2>
-          <div class="authors">
-            <a href="https://pratyushasharma.github.io/">Pratyusha Sharma</a>,
-            <a href="https://www.jordantash.com/">Jordan Ash*</a>, and
-            <a href="https://dipendramisra.com/">Dipendra Misra*</a>
-          </div>
-          <!-- <br> -->
-          <!-- <a href="https://arxiv.org/abs/2106.02039">Paper</a> -->
-           <!-- <a href="./trajectory-transformer-neurips-2021.pdf">Paper</a> -->
-          <div>
-            <span class="tag">
-              <a href="https://arxiv.org/pdf/2312.13558.pdf" target="_blank">Paper</a>&nbsp;
-              <a href="https://github.com/pratyushasharma/laser">Code</a>&nbsp;
-              <a href="bib.txt">BibTex</a>&nbsp;
-            </span>
-          </div>
-        </center>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+
+                    <li class="page-scroll">
+                        <a href="#page-top">Home</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#about">Leaderboard</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#posts">Team</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="https://github.com/pratyushasharma/laser" target="_blank">Code</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="https://arxiv.org/pdf/2312.13558.pdf" target="_blank">Paper</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="bib.txt" target="_blank">Bib</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+     <section class="intro" style="background:none; background-color:white; border-bottom: 2px solid #888888;">
+        <div class="intro-body">
+            <div class="container">
+        		<div class="row">
+                     <div class="row" style="margin-top:10%; color:black; text-align:left; font-size:normal;">
+        				        <h3 style="text-transform:none;" class="greenc">
+                          <img src="images/laser.png" class="img-fluid" style="max-width: 50px; height: auto;"/> &nbsp; LASER: Layer SElective Rank-Reduction</h3>
+
+
+                         <div class="col-md-12">
+
+                             <p>LASER (LAyer SElective Rank-Reduction) is an intervention strategy for Large Language Models that was introduced
+                             in the <a href="https://arxiv.org/pdf/2312.13558.pdf" target="_blank"><b>Paper</b></a> <i>The Truth Is In There:
+                                     Improving Reasoning in Language Models with Layer-Selective Rank Reduction, (Sharma, Ash, and Misra, arXiv 2023)</i>.
+                                 As the name suggests, LASER replaces selected weight matrices in an LLM with their low-rank approximation (which can be
+                                 thought of as a way to compress information). The key surprising finding of the paper was that given a task, if we do
+                                 LASER interventions properly, these reductions improve the performance of the LLM on that task, at times by 20-30 percentage points.
+                                 Figure below visualizes LASER intervention in an LLM.
+                             </p>
+
+                             <img src="images/main.png" style="margin-top: 10px; width:80%; height: auto; margin-left: 10%; padding-bottom:50px;"/>
+
+                             <p>The findings also show that improvements typically come from performing LASER in the MLP weight matrices in the latter half of the LLM. These
+                                 results also didnt seem restricted to just LLM and were observed in
+                                 <a href="https://arxiv.org/pdf/2106.01345.pdf" target="_blank">Decision Transformers</a> in an RL task.</p>
+
+                             <p>There are lots of open questions in this space and several possible ways to extend these results. A goal of this webpage is to
+                             contain a leaderboard with results on various benchmarks, and LLMs along with evaluating different modifications to LASER.
+                             The code is open source (MIT license) and we welcome contributions. The <a href="https://github.com/pratyushasharma/laser" target="_blank"><b>GitHub Page</b></a>
+                                 contains instructions for running LASER. We also provide a short installation snippet below:</p>
+                             <p>
+                                  <pre>
+                                    # Clone the Laser code<br/>
+                                    git clone https://github.com/pratyushasharma/laser.git<br/><br/>
+
+                                    # (Optional) create a conda environment.<br/>
+                                    conda create -n Laser python=3.8 -y<br/>
+                                    conda activate Laser<br/><br/>
+
+                                    # Install Requirements<br/>
+                                    pip3 install -r requirements.txt<br/>
+                                    pip install -e .<br/><br/>
+
+                                    # Run a sample experiment (E.g., try GPTJ on Bios Gender dataset with a chosen LASER intervention)<br/>
+                                    python3 intervention_llama2_bios.py --lname fc_in --rate 9.9 --lnum 26
+
+                                  </pre>
+                             </p>
+
+                            <p><b>Does LASER require training?</b> To perform a single LASER intervention, you do need to select 3 scalar hyperparameters:
+                            the layer to edit, the parameter type to edit and the amount of reduction to do. We typically find that doing significant reduction on
+                                the later layers (often times the last) of MLP parameters often works. Most recently, we found that doing this on Phi-1.5 LLM
+                            on the CounterFact dataset, immediately gave a 5-6 percentage point improvement without any fine-tuning. However, this is not always the case.
+                            See Table 3 for list of optimal hyperparameters.</p>
+
+                             <p><b>Can LASER reduce memory cost?</b> LASER can indeed reduce memory footprint. Given a nxn matrix whose rank is reduced to 1% of maximum rank, we get a memory
+                                 reduction down to roughly 2% of the orignal. However, currently the code doesnt support this memory reduction feature. We aim to support it soon.</p>
+
+                             <p><b>Can LASER be applied to a (some LLM name) LLM?</b> One can apply LASER to any LLM. We will release a tutorial soon to show how to do so.
+                             In fact, it can also be applied to other transformer architectures, and in principle, any deep neural network. Our code, however, currently only
+                             supports Llama2, GPT-J, Phi-1.5, Decision Transformer and Roberta. If your LLM is on HuggingFace, then it should be very easy to modify the code
+                             to apply LASER to the LLM. Finally, while we observed improvements with LASER across several benchmarks and LLMs, there is currently no mathematical
+                             guarantee that this will always happen. We encourage you try and paste results and add to the community knowledge (see the next question).</p>
+
+                            <p><b>I have a new result/found a way to improve LASER</b> We welcome such contributions. Please send us either an email or
+                                contribute to <a href="https://github.com/pratyushasharma/laser/discussions" target="_blank">Github discussion</a> and we will add the results to the leaderboard below unless you tell us not to.</p>
+                         </div>
+                     </div>
+        		</div>
+            </div>
         </div>
 
-        <br><br>
+    </section>
 
-        <div class="content">
-          <center>
-          <div class="text">
-            <p>
-              <div class="title"><b>Summary</b></div>
-<!--               <b>
-                <font size="5">Summary</font>
-              </b> -->
-              <!-- &nbsp; -->
-              Transformer-based Large Language Models (LLMs) have become a fixture in modern machine learning. <br>
-              Correspondingly, significant resources are allocated towards research that aims to further advance this technology, <br>typically resulting in models of increasing size that are trained on increasing amounts of data. <br>
-              This work, however, demonstrates the surprising result that it is often possible to improve the performance of LLMs by <br>simply removing higher-order components of their constituent weight matrices in the multi-layer perception (MLP) <br>layers. This simple intervention, which we call LAyer-SElective Rank reduction LASER, can be done on a model after <br>training has completed, and requires no additional parameters or data. LASER can dramatically boost predictive <br>performance on question-answering tasks and across various modalities for which Transformers are used. <br>
-          </p>
-          </div>
-        </center>
+    <section id="about" class="container content-section text-center" style="padding-top:50px; width:100%; padding-bottom:30px; border-bottom: 2px solid #888888;">
+        <div class="row">
+        	<h2 class="greenc">Leaderboard</h2>
+
+               <div class="row" style="margin-left: 10%; margin-right: 10%; text-align: left;">
+
+                   <p style="margin-top: 10px;">Following are results with LASER on various public benchmarks. If you have a result and want to be cited here, then please
+                       raise a Github issue <a>here</a> or send an email to one of the authors.</p>
+                   
+                   <p><b>CounterFact dataset (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy (LogLoss)</th>
+                              <th scope="col">Laser Accuracy (LogLoss)</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td>17.3 (5.78)</td>
+                              <td>19.3 (5.43)</td>
+                              <td>[U<sub>in</sub>, 8, 0.8]</td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td>13.1 (5.78)</td>
+                              <td>24.0 (5.05)</td>
+                              <td>[U<sub>in</sub>, 27, 0.01]</td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td>35.6 (3.61)</td>
+                              <td>37.6 (3.49)</td>
+                              <td>[U<sub>in</sub>, 28, 0.05]</td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                    <p><b>Hotpot QA (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                    <p><b>Fever (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                    <p><b>Bios Gender (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                    <p><b>Bios Profession (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                    <p><b>TruthfulQA (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                   <p><b>BigBench-Epistemic Reasoning (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+
+                   <p><b>BigBench-WikidataQA (Paper: )</b></p>
+
+                   <table class="table col-md-12">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Base Model Name</th>
+                              <th scope="col">Base Model Accuracy</th>
+                              <th scope="col">Laser Accuracy</th>
+                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Credit and Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Roberta (12 layers, 355M)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>GPT-J (28 layers, 6B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                            <tr>
+                              <td>Llama2 (32 layers, 7B)</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>from the original LASER paper</td>
+                            </tr>
+                          </tbody>
+                    </table>
+               </div>
         </div>
-        <br>
-        <br>
+    </section>
 
-        <center>
-        <img width=60% src="main.png"></img>
-        <br>
-        <br>
-        <i>LAyer SElective Rank reduction (LASER) replaces a specific weight matrix W of the Transformer model by its rank-$k$ <br>approximation and observes the change in the behavior of the model. We find that this rank approximation, especially for MLP <br>weights at the latter layers of the model, often offers surprising benefits to model performance.</i>
-        </center>
-        <p>
-        <br><br>
+    <section id="posts" class="intro"  class="one-edge-shadow" style="background:none; background-color:white; color:black; border:black; padding-top:60px; padding-bottom:40px; width:100%;  border-bottom: 2px solid #888888;">
+        <div class="intro-body">
+            <h2>Team</h2>
 
+            <div class="container" id="bio" style="text-align:left;">
 
-        <div class="content">
-          <div class="text">
-          <center>
-            <p>
-              <div class="title"><b>Layer Selective Rank Reduction Improves Generalization</b></div>
-<!--               <b>
-                <font size="5">Layer Selective Rank Reduction Improves Generalization</font>
-              </b> -->
-              <!-- &nbsp; -->
-              <!-- Predictive dynamics models often have excellent single-step error, but poor long-horizon accuracy due to compounding errors.
-              We show that Transformers are more reliable long-horizon predictors than state-of-the-art single-step models, even in continuous Markovian domains. -->
-          </p>
-          <br>
-          <br>
-            <img width=40% src="loss.png"></img>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <br>
-            <br>
-            <i>The effect of rank reduction across different layer types is not uniform. This figure shows the effect of rank <br>reduction for GPT-J as studied on the CounterFact dataset. The dashed line is the base model loss. In the attention <br>layers (key, query, value, out matrices), while its clear matrices could be significantly rank-reduced without damaging <br>the learned hypothesis, there is very little performance increase. Alternatively, for the multi-layer perceptron (MLP) <br>layers, rank reduction goes from uniformly harming to improving the model's performance (at layer 20).</i>
-          </center>
-          <br>
-          </div>
+                <p style="margin-top:20px;">Authors are listed in the order in the paper below.</p>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="thumbnail">
+                      <a href="https://pratyushasharma.github.io/">
+                        <img src="images/pratyusha.jpg" alt="Lights" style="height:200px;">
+                        <div class="caption">
+                          <p class="name">Pratyusha Sharma<br/>Massachusetts Institute of Technology</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="thumbnail">
+                      <a href="https://www.jordantash.com/">
+                        <img src="images/jordan_t_ash.jpg" alt="Nature" style="height:200px;">
+                        <div class="caption">
+                          <p class="name">Jordan T. Ash<br/>Microsoft Research New York</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="thumbnail">
+                      <a href="https://www.dipendramisra.com">
+                        <img src="images/dipendra.jpeg" alt="Fjords" style="height:200px;">
+                        <div class="caption">
+                          <p class="name">Dipendra Misra<br/>Microsoft Research New York</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            </div>
         </div>
-        <br>
-        <br>
+    </section>
 
-        <div class="content">
-          <div class="text">
-          <center>
-            <p>
-              <div class="title"><b>LASER offers a kind of denoising procedure that makes weakly learned facts accessible</b></div>
-   <!--            <b>
-                <font size="5.0">
-                Beam search as trajectory optimizer
-              </font>
-              </b> -->
-               <!-- . -->
-              <!-- Various control settings can be reduced to slight modifications of beam search with a sequence model. -->
-              <ul>
-                <br>
-                  <img width=40% src="corrected.png"></img>
-                  <img width=11% src="corrected-2.png"></img>
-                <br>
-                <li>Which datapoints benefit from LASER? We analyze how frequently in the training data ``corrected'' facts occur. <br> GPT-J is an ideal test bed for such analysis since its training data, the PILE dataset, is publicly available. <br> (a) For GPT-J evaluated on Counterfact we retrieve all the datapoints in the training data that contain a mention of <br>both the entity of interest and the answer that correspond to each sample in CounterFact. (b) A plot depicting the <br>cumulative top-10 accuracy of the model on all datapoints that occur in the training data less than or equal to <br>the frequency indicated on the x-axis. The plot looks at how the accuracy changes before and after LASER. (c) The <br>largest boost in performance occurs for low-frequency samples.  Demonstrates the amount of boost offered by LASER for<br> data binned by the frequency with which corresponding facts occur in the training data. Maximal improvements in <br>accuracy are from datapoints that have less-frequent occurrences in the training data as opposed to those that occur<br> more frequently.</li>
-                <br>
-                <br>
-              </ul>
-          </p>
-          </center>
-          </div>
-        </div>
- 
-      </div>
-    </div>
+    <!-- Core JavaScript Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
-<br><br><br><br>  
+    <!-- Custom Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
 
-
-</div></body></html>
+</body>
+</html>

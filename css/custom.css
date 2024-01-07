@@ -1,0 +1,32 @@
+.caption {
+    text-align: center;
+    font-weight: 600;
+}
+
+.thumbnail img {
+    margin-top: 20px;
+}
+
+pre {
+    white-space: normal;
+    word-break: break-all;
+    font-family: IBMPlexMono,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    color: #212529;
+    font-weight: 400;
+}
+
+.row .justify-content-center {
+    display: flex;
+    justify-content: center;
+  }
+
+  .benchmark-highlights a {
+    cursor: initial;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }

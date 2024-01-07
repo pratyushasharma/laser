@@ -1,0 +1,8 @@
+title: verbal-gym
+description: Benchmarking text-based AI agents.
+authors: Ching-An Cheng, Dipendra Misra, Allen Nie, Adith Swaminathan, Andrey Kolobov
+buttons:
+  Paper: 'https://arxiv.org/abs/<insert_ID>'
+remote_theme: pages-themes/cayman@v0.2.0
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one

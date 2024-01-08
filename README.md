@@ -22,18 +22,26 @@ LASER can give significant performance improvements on question-answerting tasks
 
 We first discuss installing the code and then discuss how to run an experiment.
 
+### Installation
+
 To install the experiment, please install the pip file. We chiefly just need pytorch and the datasets and transformers package from huggingface. It might be a good idea to create a conda environment.
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
-### Installation
-
-At the moment, each setup is its own file. To run an experiment that performs a single LASER transformer to GPTJ on the Counterfact dataset, you can run:
+Optionally, if you want to experiment with the CounterFact dataset then run the following script to download it. All other datasets are available on HuggingFace.
 
 ```bash
-python3 intervention_gptj_counterfact.py --lname fc_in --rate 9.9 --lnum 26
+sh scripts/get_counterfact.py
+```
+
+### Run a sample code
+
+At the moment, each setup is its own file. To run an experiment that performs a single LASER transformer to GPTJ on the Fever dataset, you can run:
+
+```bash
+python3 intervention_gptj_fever.py --lname fc_in --rate 9.9 --lnum 26
 ```
 
 here _lnum_ is &ell;, _lname_ is &tau;, and _rate_ is related to &rho; by &rho; = 1 - 0.1 * rate. The rate is a value between [0, 10.0] and measures how much rank to retain. The use of rate is for legacy reasons and we will refactor the code to directly use &rho; in the future. The mapping we use is:

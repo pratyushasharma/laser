@@ -2,7 +2,9 @@
 
 This repository contains code for the LASER paper _"The Truth is in There: Improving Reasoning in Language Models with Layer-Selective Rank Reduction,"_ by Pratyusha Sharma, Jordan T. Ash and Dipendra Misra [arXiv 2023](https://arxiv.org/pdf/2312.13558.pdf). 
 
-**Website:** [https://pratyushasharma.github.io/laser/](https://pratyushasharma.github.io/laser/)
+**Website:** [https://pratyushasharma.github.io/laser/](https://pratyushasharma.github.io/laser)
+
+**Edit (Jan 6th, 2024):** Results table has been created on the [website](https://pratyushasharma.github.io/laser). 
 
 **Edit (Jan 4th, 2024):** Discussions page is open. Feel free to use it to suggest new topics/ideas/results that are not covered by issues.
 

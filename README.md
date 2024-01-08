@@ -5,7 +5,7 @@ This repository contains code for the LASER paper _"The Truth is in There: Impro
 **Website:** [https://pratyushasharma.github.io/laser/](https://pratyushasharma.github.io/laser)
 
 **Updates:**
-- **Jan 7th, 2024:** Results table has been created on the [website](https://pratyushasharma.github.io/laser#results). 
+- **Jan 7th, 2024:** Results table has been created on the [website](https://pratyushasharma.github.io/laser/index.html#results). 
 - **Jan 4th, 2024:** Discussions page is open. Feel free to use it to suggest new topics/ideas/results that are not covered by issues.
 
 **This is an early development release. We will do a major refactor in the first half of Jan 2024 to make the code easier to use and more flexible.** 

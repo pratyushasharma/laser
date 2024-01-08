@@ -478,3 +478,7 @@ body {
     margin-bottom: 20px;
     margin-top:-20px;
 }
+
+.results td, .results th {
+    font-size: 16px;
+}

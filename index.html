@@ -109,8 +109,7 @@
                                     conda activate Laser<br/><br/>
 
                                     # Install Requirements<br/>
-                                    pip3 install -r requirements.txt<br/>
-                                    pip install -e .<br/><br/>
+                                    python3 -m pip install -r requirements.txt<br/>
 
                                     # Run a sample experiment (E.g., try GPTJ on Bios Gender dataset with a chosen LASER intervention)<br/>
                                     python3 intervention_llama2_bios.py --lname fc_in --rate 9.9 --lnum 26
@@ -147,10 +146,10 @@
         <div class="row">
         	<h2 class="greenc"><a name="results"></a>Results with LASER</h2>
 
-               <div class="row" style="margin-left: 10%; margin-right: 10%; text-align: left;">
+               <div class="row" style="margin-left: 5%; margin-right: 5%; text-align: left;">
 
                    <p style="margin-top: 10px;">Following are results with LASER on various public benchmarks. If you have a result and want to be cited here, then please
-                       raise a Github issue <a>here</a> or send an email to one of the authors. We specially welcome modifications to LASER. </p>
+                       raise a Github issue <a href="https://github.com/pratyushasharma/laser/issues" target="_blank">here</a> or send an email to one of the authors. We specially welcome modifications to LASER. </p>
                    
                    <p><b>CounterFact dataset (<a href="https://github.com/pratyushasharma/laser/blob/main/scripts/get_counterfact.py" target="_blank">script</a> to get dataset)</b></p>
 
@@ -159,9 +158,9 @@
                             <tr>
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Accuracy Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Accuracy (Log Loss)</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -170,21 +169,21 @@
                               <td>17.3 (5.78)</td>
                               <td>19.3 (5.43)</td>
                               <td>[U<sub>in</sub>, 8, 0.8]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>13.1 (5.78)</td>
                               <td>24.0 (5.05)</td>
                               <td>[U<sub>in</sub>, 27, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>35.6 (3.61)</td>
                               <td>37.6 (3.49)</td>
                               <td>[U<sub>in</sub>, 28, 0.05]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -197,8 +196,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -207,21 +206,21 @@
                               <td> 6.1 (10.99)</td>
                               <td> 6.7 (10.55)</td>
                               <td>[U<sub>out</sub>, 2, 0.4]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>19.6 (3.40)</td>
                               <td>19.5 (3.39)</td>
                               <td>[U<sub>in</sub>, 27, 0.1]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>16.5 (3.15)</td>
                               <td>17.2 (2.97)</td>
                               <td> [U<sub>in</sub>, 27, 0.2]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -234,8 +233,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -244,21 +243,21 @@
                               <td>50.0 (2.5)</td>
                               <td>52.3 (1.76)</td>
                               <td>[U<sub>in</sub>, 3, 0.4]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>50.2 (1.24)</td>
                               <td>56.2 (1.27)</td>
                               <td>[U<sub>in</sub>, 24, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>59.3 (1.02)</td>
                               <td>64.5 (0.91)</td>
                               <td>[U<sub>in</sub>, 30, 0.2]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -271,8 +270,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -281,21 +280,21 @@
                               <td>87.5 (0.87)</td>
                               <td>93.7 (1.13)</td>
                               <td>[U<sub>in</sub>, 9, 0.9]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>70.9 (3.86)</td>
                               <td>97.5 (4.20)</td>
                               <td>[U<sub>in</sub>, 14, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>75.5 (3.48)</td>
                               <td>88.4 (2.98)</td>
                               <td>[U<sub>in</sub>, 24, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -308,8 +307,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -318,21 +317,21 @@
                               <td>64.5 (4.91)</td>
                               <td>72.5 (6.44)</td>
                               <td>[U<sub>in</sub>, 3, 0.9]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>75.6 (4.64)</td>
                               <td>82.1 (4.91)</td>
                               <td>[U<sub>in</sub>, 18, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>85.0 (4.19)</td>
                               <td>86.7 (4.05)</td>
                               <td>[U<sub>out</sub>, 30, 0.4]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -345,8 +344,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -355,21 +354,21 @@
                               <td>56.2 (1.60)</td>
                               <td>56.2 (1.42)</td>
                               <td>[U<sub>in</sub>, 0, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>54.9 (1.02)</td>
                               <td>55.6 (1.01)</td>
                               <td>[U<sub>in</sub>, 7, 0.8]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>50.5 (0.95)</td>
                               <td>56.2 (1.04)</td>
                               <td>[U<sub>in</sub>, 30, 0.05]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -382,8 +381,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -392,21 +391,21 @@
                               <td>37.1 (9.39)</td>
                               <td>41.8 (6.80)</td>
                               <td>[U<sub>out</sub>, 1, 0.4]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>37.1 (0.74)</td>
                               <td>38.3 (0.62)</td>
                               <td>[U<sub>in</sub>, 26, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>44.8 (0.78)</td>
                               <td>63.4 (0.73)</td>
                               <td>[U<sub>out</sub>, 28, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>
@@ -419,8 +418,8 @@
                               <th scope="col">Base Model Name</th>
                               <th scope="col">Base Model Accuracy (Log Loss)</th>
                               <th scope="col">Laser Accuracy (Log Loss)</th>
-                              <th scope="col">Laser Hyperparameters (&tau;, &ell;, &rho;)</th>
-                              <th scope="col">Credit and Description</th>
+                              <th scope="col">Laser Hyperparams (&tau;, &ell;, &rho;)</th>
+                              <th scope="col">Method Description & Credit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -429,21 +428,21 @@
                               <td>28.0 (9.07)</td>
                               <td>30.7 (7.69)</td>
                               <td>[U<sub>in</sub>, 7, 0.4]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>GPT-J (28 layers, 6B)</td>
                               <td>51.8 (3.52)</td>
                               <td>65.9 (2.86)</td>
                               <td>[U<sub>in</sub>, 27, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                             <tr>
                               <td>Llama2 (32 layers, 7B)</td>
                               <td>59.5 (2.40)</td>
                               <td>62.0 (2.31)</td>
                               <td>[U<sub>in</sub>, 27, 0.01]</td>
-                              <td>from the original LASER paper</td>
+                              <td>Vanilla LASER. From the LASER paper</td>
                             </tr>
                           </tbody>
                     </table>

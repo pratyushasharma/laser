@@ -68,8 +68,12 @@ class ExperimentHeader:
         parser.add_argument("--llm", type=str, default="llama2-7", help="name of the LLM")
         parser.add_argument("--model_path",
                             type=str,
-                            default="/home/dimisra/llama/Llama-2-7b-hf",
+                            default="./llama/Llama-2-7b-hf",
                             help="Place where model weights are stored")
+        parser.add_argument("--llama_tokenizer_path",
+                            type=str,
+                            default="./llama/Llama-2-7b-hf",
+                            help="Place where Llama tokenizer is stored (only needed for HotPot)")
 
         # Intervention hyperparameters
         parser.add_argument("--intervention", type=str, default="LASER",

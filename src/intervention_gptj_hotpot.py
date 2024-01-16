@@ -9,7 +9,7 @@ from transformers import AutoTokenizer
 from transformers import GPTJForCausalLM
 
 from dataset_utils.hotpot import Hotpot
-from laser.LaserWrapper import LaserWrapper
+from laser.intervention_wrapper import LaserWrapper
 from study_utils.log_utils import Logger
 from study_utils.metric_utils import Metrics, DatasetMetrics
 from study_utils.time_utils import elapsed_from_str, Progress

@@ -9,7 +9,7 @@ from laser.phi1_5_laser import Phi15Laser
 from laser.roberta_laser import RobertaLaser
 
 
-class LaserWrapper:
+class InterventionWrapper:
 
     def __init__(self):
         pass

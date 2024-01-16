@@ -8,7 +8,7 @@ from tqdm import tqdm
 from transformers import LlamaTokenizerFast
 from transformers import LlamaForCausalLM
 from dataset_utils.fever import FEVER
-from laser.LaserWrapper import LaserWrapper
+from laser.intervention_wrapper import LaserWrapper
 from study_utils.log_utils import Logger
 from study_utils.metric_utils import Metrics, DatasetMetrics, ContextAnswerLogProb
 from study_utils.time_utils import elapsed_from_str, Progress

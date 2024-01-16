@@ -6,7 +6,7 @@ from tqdm import tqdm
 from copy import deepcopy
 
 from experiment_header import ExperimentHeader
-from laser.intervention_wrapper import LaserWrapper
+from intervention.intervention_wrapper import InterventionWrapper
 from study_utils.metric_utils import Metrics, DatasetMetrics, ContextAnswerLogProb
 from study_utils.time_utils import elapsed_from_str, Progress
 
@@ -38,8 +38,9 @@ class AbstractExperiment:
         self.logger = self.setup.logger
         self.args = self.setup.args
 
-        self.model = self.setup.model
-        self.tokenizer = self.setup.tokenizer
+        self.llm = None
+        self.tokenizer = None
+        self.dataset = None
 
         # Object to measure progress (as in time taken and time left to complete)
         self.progress = Progress(logger=logger)
@@ -57,32 +58,35 @@ class AbstractExperiment:
 
     def run(self):
 
-        # Make the LLM and dataset
-
         self.logger.log(f"Starting a new experiment. LLM Name: {self.args.llm_name}, Dataset {self.args.dataset}.")
 
-        # Perform LASER intervention
-        dataset_size = len(dataset)
-        self.logger.log(f"Starting a new intervention for layer number {args.lnum}, "
-                        f"layer type {args.lname}, rate {args.rate}. Dataset size {dataset_size}.")
+        # Make the LLM and dataset
+        self.llm, self.tokenizer = self.setup.llm_util.get_llm_and_tokenizer()
+
+        # Make the dataset
+        self.logger.log("Creating the dataset.")
+        dataset, choices = self.setup.dataset_util.get_dataset()
+        self.logger.log("Dataset created.")
 
         # Evaluate the model. We make two decisions
         # - either to do grid search or evaluate all provided intervention(s) at once
         # - evaluate on the entire dataset or do selection based on validation
         #   (and evaluate on test only if validation performance improves)
 
+        # Perform intervention
         time_edit_start = time.time()
-        model_edit = LaserWrapper.get_edited_model(model=model,
-                                                   lname=args.lname,
-                                                   lnum=args.lnum,
-                                                   rate=args.rate,
-                                                   intervention=args.intervention,
-                                                   logger=self.logger,
-                                                   in_place=True)
+        model_edit = InterventionWrapper.get_edited_model(model=model,
+                                                          lname=args.lname,
+                                                          lnum=args.lnum,
+                                                          rate=args.rate,
+                                                          intervention=args.intervention,
+                                                          logger=self.logger,
+                                                          in_place=True)
 
         model_edit.to(self.device)
         self.logger.log(f"Edited and put model on {model_edit.device} in time {elapsed_from_str(time_edit_start)}")
 
+        # Evaluate the model
         self.evaluate_model(model_edit, dataset, choices)
 
         # Save results and terminate

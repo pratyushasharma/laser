@@ -8,11 +8,12 @@ from study_utils.log_utils import Logger
 
 class ExperimentSetup:
 
-    def __init__(self, args, save_path, base_llm, logger):
+    def __init__(self, args, save_path, llm_util, dataset_util, logger):
 
         self.args = args
         self.save_path = save_path
-        self.base_llm = base_llm
+        self.llm_util = llm_util
+        self.dataset_util = dataset_util
         self.logger = logger
 
 
@@ -44,20 +45,18 @@ class ExperimentHeader:
         logger.log("=" * 50)
 
         # Create base LLMs
-        base_llm = LLMWrapper().get_llm_and_tokenizer(args.llm_name)
-        logger.log(f"Created LLM {args.llm_name} and put it on device {args.device}")
+        llm_util = LLMWrapper(args)
+        logger.log(f"Created LLM util")
 
         # Create the evaluation dataset
-        dataset = DatasetUtil().get_dataset(dataset_name=args.dataset,
-                                            logger=logger,
-                                            split=args.split)
+        dataset_util = DatasetUtil(args, logger)
 
         logger.log(f"Created Dataset {args.dataset} (split: {args.split})")
 
         return ExperimentSetup(args=args,
                                save_path=save_dir,
-                               base_llm=base_llm,
-                               dataset=dataset,
+                               llm_util=llm_util,
+                               dataset_util=dataset_util,
                                logger=logger)
 
     @staticmethod
@@ -107,7 +106,7 @@ class ExperimentHeader:
 
         # Logging hyperparameters
         parser.add_argument('--home_dir', type=str,
-                            default="./iclr2024/big_bench/",
+                            default="./results",
                             help='Directory where the data is')
 
         args = parser.parse_args()

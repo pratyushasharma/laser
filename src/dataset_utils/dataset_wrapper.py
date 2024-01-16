@@ -18,14 +18,19 @@ class DatasetUtil:
         "truthfulqa": TruthfulQA
     }
 
-    def __init__(self):
-        pass
+    def __init__(self, args, logger):
+        self.args = args
+        self.dataset_name = args.dataset_name
+        self.logger = logger
 
-    @staticmethod
-    def get_dataset(dataset_name, logger, **kwargs):
+    def get_dataset(self):
 
         for it_dataset_name, it_dataset_constructor in DatasetUtil.datasets.items():
-            if it_dataset_name == dataset_name:
-                return it_dataset_constructor(logger, **kwargs)
+            if it_dataset_name == self.dataset_name:
+                dataset, choices = it_dataset_constructor.get_dataset(self.logger, self.args)
 
-        raise AssertionError(f"Dataset {dataset_name} not supported.")
+                if type(dataset) == list:
+                    # Convert to validation and test set
+                    pass
+
+        raise AssertionError(f"Dataset {self.dataset_name} not supported.")

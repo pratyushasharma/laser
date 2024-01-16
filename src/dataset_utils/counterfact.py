@@ -9,22 +9,22 @@ from dataset_utils.abstract_dataset import AbstractDataset
 
 class CounterFact(AbstractDataset):
 
-    def __init__(self, dataset_file="./data/counterfact"):
-        super(AbstractDataset, self).__init__()
+    def __init__(self, args, logger, dataset_file="./data/counterfact"):
+        super(AbstractDataset, self).__init__(args, logger)
         self.dataset_file = dataset_file
 
-    def download_counterfact_dataset(self, logger):
+    def download_counterfact_dataset(self):
 
         time_s = time.time()
         rome_path = "https://rome.baulab.info/data/dsets/counterfact.json"
-        logger.log(f"Fetching Counterfact data from {rome_path}")
+        self.logger.log(f"Fetching Counterfact data from {rome_path}")
 
         with urllib.request.urlopen(rome_path) as url:
             orig_dataset = json.load(url)
 
-        logger.log(f"Dataset fetched in {time.time() - time_s:.3f} seconds.")
+        self.logger.log(f"Dataset fetched in {time.time() - time_s:.3f} seconds.")
 
-        logger.log(f"The original dataset has {len(orig_dataset)} many datapoints.")
+        self.logger.log(f"The original dataset has {len(orig_dataset)} many datapoints.")
         dataset = []
         for dp in orig_dataset:
             question = dp["requested_rewrite"]["prompt"].format(dp["requested_rewrite"]["subject"])
@@ -43,17 +43,17 @@ class CounterFact(AbstractDataset):
                      "gold-answer": " " + answer
                      })
 
-        logger.log(f"After processing, the new dataset has {len(dataset)} many datapoints.")
+        self.logger.log(f"After processing, the new dataset has {len(dataset)} many datapoints.")
 
         with open(self.dataset_file, "wb") as f:
             pickle.dump(dataset, f)
 
         return dataset
 
-    def get_dataset(self, logger, args):
+    def get_dataset(self):
 
         if not os.path.exists(self.dataset_file):
-            original_data = self.download_counterfact_dataset(logger)
+            original_data = self.download_counterfact_dataset()
         else:
             with open(self.dataset_file, "rb") as f:
                 original_data = pickle.load(f)
@@ -67,6 +67,8 @@ class CounterFact(AbstractDataset):
             assert answer.startswith(" "), f"Found answer that doesn't start with space ${answer}$"
             dataset.append((question, answer))
 
-        logger.log(f"Processed CounterFact dataset of size {num_dp}")
+        # Since this is an open-ended QA task, there is no fixed choice set
+        choices = None
+        self.logger.log(f"Processed CounterFact dataset of size {num_dp}")
 
-        return dataset
+        return dataset, choices

@@ -5,11 +5,11 @@ from dataset_utils.abstract_dataset import AbstractDataset
 
 class Hotpot(AbstractDataset):
 
-    def __init__(self, llama_tokenizer_path):
-        super(Hotpot, self).__init__()
-        self.tokenizer = LlamaTokenizerFast.from_pretrained(llama_tokenizer_path)
+    def __init__(self, args, logger):
+        super(Hotpot, self).__init__(args, logger)
+        self.tokenizer = LlamaTokenizerFast.from_pretrained(args.llama_tokenizer_path)
 
-    def get_dataset(self, logger):
+    def get_dataset(self):
 
         full_dataset = load_dataset("hotpot_qa", "fullwiki")
         num_val = len(full_dataset["validation"])
@@ -39,7 +39,10 @@ class Hotpot(AbstractDataset):
 
         dataset = train + validation
         num_dp = len(dataset)
-        logger.log(f"Read dataset of size {num_dp} of which the first {len(train)} examples are from the "
-                   f"train set and the remaining {len(validation)} from the validation split.")
+        self.logger.log(f"Read dataset of size {num_dp} of which the first {len(train)} examples are from the "
+                        f"train set and the remaining {len(validation)} from the validation split.")
 
-        return dataset
+        # Since this is an open-ended QA task, there is no fixed choice set
+        choices = None
+
+        return dataset, choices

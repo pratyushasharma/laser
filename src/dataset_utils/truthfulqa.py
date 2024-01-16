@@ -5,18 +5,17 @@ from dataset_utils.abstract_dataset import AbstractDataset
 
 class TruthfulQA(AbstractDataset):
 
-    def __init__(self):
-        super(AbstractDataset, self).__init__()
+    def __init__(self, args, logger):
+        super(AbstractDataset, self).__init__(args, logger)
 
-    def get_truthfulqa_pointwise_data(self, logger):
+    def get_dataset(self):
 
         dataset = load_dataset("truthful_qa", "multiple_choice")
         dataset = dataset['validation']
         num_dp = len(dataset)
-        logger.log(f"Read dataset of size {num_dp}")
+        self.logger.log(f"Read dataset of size {num_dp}")
 
         pointwise_dataset = []
-        #####
         for i in tqdm(range(0, num_dp)):
             question = dataset[i]["question"]
             answers = dataset[i]["mc2_targets"]["choices"]
@@ -33,6 +32,7 @@ class TruthfulQA(AbstractDataset):
                 prompt += "Is this statement true or false? This statement is"
                 pointwise_dataset.append((prompt, labels_ans[j]))
 
-        logger.log(f"Created modified dataset of size {len(pointwise_dataset)}.")
+        self.logger.log(f"Created modified dataset of size {len(pointwise_dataset)}.")
+        choices = ["true", "false"]
 
-        return pointwise_dataset
+        return pointwise_dataset, choices

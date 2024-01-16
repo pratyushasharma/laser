@@ -27,7 +27,7 @@ class DatasetUtil:
 
         for it_dataset_name, it_dataset_constructor in DatasetUtil.datasets.items():
             if it_dataset_name == self.dataset_name:
-                dataset, choices = it_dataset_constructor.get_dataset(self.logger, self.args)
+                dataset, choices = it_dataset_constructor().get_dataset(self.logger, self.args)
 
                 if type(dataset) == list:
                     # Convert to validation and test set

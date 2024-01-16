@@ -4,10 +4,10 @@ from dataset_utils.abstract_dataset import AbstractDataset
 
 class BiasBiosGender(AbstractDataset):
 
-    def __init__(self):
-        super(AbstractDataset, self).__init__()
+    def __init__(self, args, logger):
+        super(AbstractDataset, self).__init__(args, logger)
 
-    def get_dataset(self, logger):
+    def get_dataset(self):
 
         # train_dataset = load_dataset("LabHC/bias_in_bios", split='train')
         # test_dataset = load_dataset("LabHC/bias_in_bios", split='test')
@@ -21,18 +21,19 @@ class BiasBiosGender(AbstractDataset):
 
         # question = dev_dataset[i]['hard_text'] + " Is the person male or female? The person is"
         # answer_gender = gender_dict[str(dev_dataset[i]['gender'])]
+        choices = ["male", "female"]
 
-        return dataset
+        return dataset, choices
 
 
 class BiasBiosOccupation(AbstractDataset):
 
     occupations = ['journalist', 'poet', 'composer', 'model', 'teacher', 'architect', 'painter', 'professor']
 
-    def __init__(self):
-        super(AbstractDataset, self).__init__()
+    def __init__(self, args, logger):
+        super(AbstractDataset, self).__init__(args, logger)
 
-    def get_dataset(self, logger):
+    def get_dataset(self):
 
         # train_dataset = load_dataset("LabHC/bias_in_bios", split='train')
         # test_dataset = load_dataset("LabHC/bias_in_bios", split='test')
@@ -87,7 +88,8 @@ class BiasBiosOccupation(AbstractDataset):
         # else:
         #     question += 'a'
 
-        logger.log(f"Out of a dataset of size {len(dataset)}, we create a filtered dataset of size "
-                   f"{len(filtered_dataset)} that only contains occupations in {BiasBiosOccupation.occupations}.")
+        choices = BiasBiosOccupation.occupations
+        self.logger.log(f"Out of a dataset of size {len(dataset)}, we create a filtered dataset of size "
+                        f"{len(filtered_dataset)} that only contains occupations in {BiasBiosOccupation.occupations}.")
 
-        return filtered_dataset
+        return filtered_dataset, choices

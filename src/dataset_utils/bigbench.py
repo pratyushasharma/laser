@@ -4,12 +4,12 @@ from dataset_utils.abstract_dataset import AbstractDataset
 
 class BigBench(AbstractDataset):
 
-    def __init__(self):
-        super(AbstractDataset, self).__init__()
+    def __init__(self, args, logger):
+        super(AbstractDataset, self).__init__(args, logger)
 
-    def get_bb_dataset(self, split):
+    def get_bb_dataset(self):
 
-        if split == "causal_judgement":
+        if self.args.split == "causal_judgement":
 
             raw_dataset = load_dataset("tasksource/bigbench", "causal_judgment")
             choices = ["Yes", "No"]
@@ -22,7 +22,7 @@ class BigBench(AbstractDataset):
                     assert targets[0] in choices
                     dataset.append((dp["inputs"], targets[0]))
 
-        elif split == "web_of_lies":
+        elif self.args.split == "web_of_lies":
 
             raw_dataset = load_dataset("lighteval/big_bench_hard", "web_of_lies")
             choices = ["Yes", "No"]
@@ -33,7 +33,7 @@ class BigBench(AbstractDataset):
                 assert target in choices
                 dataset.append((dp["input"], target))
 
-        elif split == "epistemic_reasoning":
+        elif self.args.split == "epistemic_reasoning":
 
             raw_dataset = load_dataset("tasksource/bigbench", "epistemic_reasoning")
             choices = ["entailment", "non-entailment"]
@@ -46,7 +46,7 @@ class BigBench(AbstractDataset):
                     assert targets[0] in choices
                     dataset.append((dp["inputs"], targets[0]))
 
-        elif split == "epistemic_reasoning_y":
+        elif self.args.split == "epistemic_reasoning_y":
 
             raw_dataset = load_dataset("tasksource/bigbench", "epistemic_reasoning")
             choices = ["True", "False"]
@@ -63,7 +63,7 @@ class BigBench(AbstractDataset):
                            "Does the premise entails the hypothesis, True or False? Answer is"
                     dataset.append((text, targets[0]))
 
-        elif split == "qa_wikidata":
+        elif self.args.split == "qa_wikidata":
 
             raw_dataset = load_dataset("tasksource/bigbench", "qa_wikidata")
 
@@ -77,7 +77,7 @@ class BigBench(AbstractDataset):
                         dataset.append((dp["inputs"], targets[0]))
 
         else:
-            raise AssertionError(f"Unhandled split {split}.")
+            raise AssertionError(f"Unhandled split {self.args.split}.")
 
         if choices is not None:
             assert len(set(choices)) == len(choices), f"Found duplicates in {choices}"

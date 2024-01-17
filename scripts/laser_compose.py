@@ -201,15 +201,12 @@ def stacking():
 
     all_loss = {}
 
-    # 0. Initialize different amounts of reductions
     dtpts_to_use = list(range(len(d)))
-    # dtpts_to_use = dtpts_to_use[:int(args.val_set*len(d))]
-
-    dtpts_to_use = dtpts_to_use[int(0.2*len(d)):]
+    dtpts_to_use = dtpts_to_use[:int(args.val_set*len(d))]
 
     model_edit = deepcopy(model_o)
     
-    reductions = torch.from_numpy(np.zeros((1,28))) # 6 layer types and 28 layers
+    reductions = torch.from_numpy(np.zeros((1,28))) # Only MLP layer: 1 layer types and 28 layers
 
     
     accuracy_ = return_accuracy(model_o, model_edit,reductions,d,dtpts_to_use)

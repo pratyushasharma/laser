@@ -12,9 +12,9 @@ This repository contains code for the paper _"The Truth is in There: Improving R
 
 We welcome issues and pull requests. If you report a new result using LASER on a given LLM and NLP task, please issue a pull request and we'll add it to the website's leaderboard.
 
-## What is LASER?
+## What is Layer-Selective Rank Reduction?
 
-LASER stands for **LA**yer **SE**lective **R**ank-Reduction, and is an intervention where we replace a selected weight matrix in the transformer architecture of an LLM with its low-rank approximation. A single LASER transformation consists of 3 hyperparameters: the layer number to modify (&ell;) such as 16th layer, the parameter type (&tau;) such as the first MLP layer, and the fraction of the maximum rank to retain (&rho;) such as 0.01 fraction of the rank. We can write this transformation as (&ell;, &tau;, &rho;) and we can compose these transformations and apply them in parallel. The low-rank approximation is performed using SVD. Figure below from our paper shows an illustration.
+**LA**yer-**SE**lective **R**ank-Reduction, abbreviated as LASER, is an intervention where we replace a selected weight matrix in the transformer architecture of an LLM with its low-rank approximation. A single LASER transformation consists of 3 hyperparameters: the layer number to modify (&ell;) such as 16th layer, the parameter type (&tau;) such as the first MLP layer, and the fraction of the maximum rank to retain (&rho;) such as 0.01 fraction of the rank. We can write this transformation as (&ell;, &tau;, &rho;) and we can compose these transformations and apply them in parallel. The low-rank approximation is performed using SVD. Figure below from our paper shows an illustration.
 
 ![LASER illustration](https://pratyushasharma.github.io/laser/images/main.png)
 

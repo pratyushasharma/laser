@@ -1,4 +1,4 @@
-# Layer Selective Rank Reduction
+# Layer-Selective Rank Reduction
 
 This repository contains code for the paper _"The Truth is in There: Improving Reasoning in Language Models with Layer-Selective Rank Reduction,"_ by Pratyusha Sharma, Jordan T. Ash and Dipendra Misra [ICLR 2024](https://arxiv.org/pdf/2312.13558.pdf). 
 

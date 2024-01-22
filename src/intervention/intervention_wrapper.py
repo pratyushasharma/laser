@@ -15,16 +15,16 @@ class InterventionWrapper:
         pass
 
     @staticmethod
-    def get_edited_model(model, lname, lnum, rate, intervention="rank-reduction", logger=None, in_place=True):
+    def get_edited_model(model, args, logger=None, in_place=True):
 
         if type(model) == LlamaForCausalLM:
             logger.log("Editing a LlamaForCausalLM Model")
 
             return LLAMA2Laser.get_edited_model(model=model,
-                                                lname=lname,
-                                                lnum=lnum,
-                                                rate=rate,
-                                                intervention=intervention,
+                                                lname=args.lname,
+                                                lnum=args.lnum,
+                                                rate=args.rate,
+                                                intervention=args.intervention,
                                                 logger=logger,
                                                 in_place=in_place)
 
@@ -32,10 +32,10 @@ class InterventionWrapper:
 
             logger.log("Editing a RobertaForMaskedLM Model")
             return RobertaLaser.get_edited_model(model=model,
-                                                 lname=lname,
-                                                 lnum=lnum,
-                                                 rate=rate,
-                                                 intervention=intervention,
+                                                 lname=args.lname,
+                                                 lnum=args.lnum,
+                                                 rate=args.rate,
+                                                 intervention=args.intervention,
                                                  logger=logger,
                                                  in_place=in_place)
 
@@ -43,10 +43,10 @@ class InterventionWrapper:
 
             logger.log("Editing a GPTJForCausalLM Model")
             return GPTJLaser.get_edited_model(model=model,
-                                              lname=lname,
-                                              lnum=lnum,
-                                              rate=rate,
-                                              intervention=intervention,
+                                              lname=args.lname,
+                                              lnum=args.lnum,
+                                              rate=args.rate,
+                                              intervention=args.intervention,
                                               logger=logger,
                                               in_place=in_place)
 
@@ -54,10 +54,10 @@ class InterventionWrapper:
 
             logger.log("Editing a DecisionTransformer Model")
             return MujocoDTLaser.get_edited_model(model=model,
-                                                  lname=lname,
-                                                  lnum=lnum,
-                                                  rate=rate,
-                                                  intervention=intervention,
+                                                  lname=args.lname,
+                                                  lnum=args.lnum,
+                                                  rate=args.rate,
+                                                  intervention=args.intervention,
                                                   logger=logger,
                                                   in_place=in_place)
 
@@ -65,12 +65,12 @@ class InterventionWrapper:
 
             logger.log("Editing a Phi1-5 CausalLM Model")
             return Phi15Laser.get_edited_model(model=model,
-                                              lname=lname,
-                                              lnum=lnum,
-                                              rate=rate,
-                                              intervention=intervention,
-                                              logger=logger,
-                                              in_place=in_place)
+                                               lname=args.lname,
+                                               lnum=args.lnum,
+                                               rate=args.rate,
+                                               intervention=args.intervention,
+                                               logger=logger,
+                                               in_place=in_place)
 
         else:
             raise AssertionError(f"Unhandled model of type {type(model)}.")

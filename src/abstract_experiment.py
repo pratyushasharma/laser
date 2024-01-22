@@ -7,6 +7,7 @@ from copy import deepcopy
 
 from experiment_header import ExperimentHeader
 from intervention.intervention_wrapper import InterventionWrapper
+from intervention.parse_interventions import InterventionParser
 from study_utils.metric_utils import Metrics, DatasetMetrics, ContextAnswerLogProb
 from study_utils.time_utils import elapsed_from_str, Progress
 
@@ -42,6 +43,9 @@ class AbstractExperiment:
         self.tokenizer = None
         self.dataset = None
 
+        # Parse the list of interventions to perform
+        self.interventions = InterventionParser(setup=self.setup).create_grid_search_interventions()
+
         # Object to measure progress (as in time taken and time left to complete)
         self.progress = Progress(logger=logger)
 
@@ -73,26 +77,33 @@ class AbstractExperiment:
         # - evaluate on the entire dataset or do selection based on validation
         #   (and evaluate on test only if validation performance improves)
 
-        # Perform intervention
-        time_edit_start = time.time()
-        model_edit = InterventionWrapper.get_edited_model(model=model,
-                                                          lname=args.lname,
-                                                          lnum=args.lnum,
-                                                          rate=args.rate,
-                                                          intervention=args.intervention,
-                                                          logger=self.logger,
-                                                          in_place=True)
+        for intervention in self.interventions:
 
-        model_edit.to(self.device)
-        self.logger.log(f"Edited and put model on {model_edit.device} in time {elapsed_from_str(time_edit_start)}")
+            # Perform intervention
+            time_edit_start = time.time()
+            model_edit = InterventionWrapper.get_edited_model(model=model,
+                                                              intervention=intervention,
+                                                              logger=self.logger)
 
-        # Evaluate the model
-        self.evaluate_model(model_edit, dataset, choices)
+            model_edit.to(self.device)
+            self.logger.log(f"Edited and put model on {model_edit.device} in time {elapsed_from_str(time_edit_start)}")
 
-        # Save results and terminate
-        self.terminate_and_save(predictions)
+            # Evaluate the model
+            for split_name, split_datapoints in dataset.items():
 
-    def evaluate_model(self, model_edit, dataset, choices):
+                predictions = self.evaluate_model(model=model_edit,
+                                                  dataset=split_datapoints,
+                                                  choices=choices)
+
+                # Calculate accuracy
+
+            # Save results and terminate
+            self.terminate_and_save(predictions)
+
+    def evaluate_model(self, model, dataset, choices):
+
+        assert type(dataset) == list, f"Dataset must be a list, found {type(dataset)}."
+        dataset_size = len(dataset)
 
         predictions = []
 
@@ -123,13 +134,13 @@ class AbstractExperiment:
                 if single_token_choices:
                     is_correct, log_prob_results = self.single_token_eval(prompt=prompt,
                                                                           label=label,
-                                                                          model_edit=model_edit,
+                                                                          model_edit=model,
                                                                           choices=choices,
                                                                           choice_token_ids=choice_token_ids)
                 else:
                     is_correct, log_prob_results = self.multi_token_eval(prompt=prompt,
                                                                          label=label,
-                                                                         model_edit=model_edit,
+                                                                         model_edit=model,
                                                                          choices=choices)
 
             # We compute 0-1 match, f1, precision, and recall score in addition to log-prob of the answer tokens
@@ -176,7 +187,7 @@ class AbstractExperiment:
 
     def single_token_eval(self, prompt, label, model_edit, choices, choice_token_ids):
 
-        input_and_answer = tokenizer(prompt, return_tensors="pt").to(self.device)
+        input_and_answer = self.tokenizer(prompt, return_tensors="pt").to(self.device)
 
         # Generate from the model
         # Compute log probability of question + answer
@@ -204,7 +215,7 @@ class AbstractExperiment:
 
         for choice in choices:
 
-            input_and_answer = tokenizer(prompt + " " + choice, return_tensors="pt").to(self.device)
+            input_and_answer = self.tokenizer(prompt + " " + choice, return_tensors="pt").to(self.device)
 
             # Generate from the model
             # Compute log probability of question + answer
@@ -235,7 +246,7 @@ class AbstractExperiment:
 
         time_start = time.time()
         # Save predictions
-        save_pred_fname = f"{self.save_dir}/{llm_name}-predictions-{args.lnum}-{args.lname}-{args.rate}.p"
+        save_pred_fname = f"{self.save_dir}/{llm_name}-predictions-{self.args.lnum}-{self.args.lname}-{self.args.rate}.p"
 
         with open(save_pred_fname, "wb") as f:
             pickle.dump(predictions, f)
@@ -244,7 +255,7 @@ class AbstractExperiment:
         save_summary_fname = f"{self.save_dir}/{llm_name}-result-summary-{args.lnum}-{args.lname}-{args.rate}.pkl"
 
         results = self.dataset_metric.agg_to_dict()
-        for k, v in args.__dict__.items():
+        for k, v in self.args.__dict__.items():
             results["args/%s" % k] = v
 
         with open(save_summary_fname, "wb") as f:
@@ -269,8 +280,8 @@ class AbstractExperiment:
         validation_predictions = predictions[:val_size]
         test_predictions = predictions[val_size:]
 
-        val_acc, val_logloss = LlamaExperiment.get_acc_log_loss(validation_predictions)
-        test_acc, test_logloss = LlamaExperiment.get_acc_log_loss(test_predictions)
+        val_acc, val_logloss = AbstractExperiment.get_acc_log_loss(validation_predictions)
+        test_acc, test_logloss = AbstractExperiment.get_acc_log_loss(test_predictions)
 
         return Results(val_acc=val_acc,
                        val_logloss=val_logloss,

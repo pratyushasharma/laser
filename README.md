@@ -5,7 +5,7 @@ This repository contains code for the paper _"The Truth is in There: Improving R
 **Website:** [https://pratyushasharma.github.io/laser/](https://pratyushasharma.github.io/laser)
 
 **Updates:**
-- **Jan 18th, 2024:** Refactoring is happening in the [refactor](https://github.com/pratyushasharma/laser/tree/refactor) branch. We do working to release it quickly and thank you for your patience.
+- **Jan 18th, 2024:** Refactoring is happening in the [refactor](https://github.com/pratyushasharma/laser/tree/refactor) branch. We are working to release it quickly and thank you for your patience.
 - **Jan 7th, 2024:** Results table has been created on the [website](https://pratyushasharma.github.io/laser/index.html#results). 
 - **Jan 4th, 2024:** Discussions page is open. Feel free to use it to suggest new topics/ideas/results that are not covered by issues.
 

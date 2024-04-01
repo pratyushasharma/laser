@@ -36,7 +36,7 @@ pip3 install -r requirements.txt
 Optionally, if you want to experiment with the CounterFact dataset then run the following script to download it. All other datasets are available on HuggingFace.
 
 ```bash
-sh scripts/get_counterfact.py
+python scripts/get_counterfact.py
 ```
 
 ### Run a sample code

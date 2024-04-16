@@ -58,7 +58,7 @@ def do_low_rank(weight, k, debug=False, niter=2):
 
     return weight_approx
 
-def do_UV_approximation(weight, r, me_lr=0.001, n_iter=1000):
+def do_UV_approximation(weight, r, me_lr=0.001, n_iter=250):
     assert weight.ndim == 2
     m = weight.shape[0]
     n = weight.shape[1]

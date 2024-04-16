@@ -65,15 +65,26 @@ def do_UV_approximation(weight, r, me_lr=0.001, n_iter=250):
     m = int(m)
     r = int(r)
     n = int(n)
+    #DEBUG
+    print(m)
+    print(r)
+    print(n)
     U = torch.rand((m, r), dtype=torch.float32) * 2 - 1
     V = torch.rand((r, n), dtype=torch.float32) * 2 - 1
+    U.requires_grad_()
+    V.requires_grad_()
     for _ in range(n_iter):
         try:
-            diff_doubled = 2 * (torch.matmul(U, V) - weight)
-            U = U - me_lr * torch.matmul(diff_doubled, V.t())
-            V = V - me_lr * torch.matmul(U.t(), diff_doubled)
+            U.grad = None
+            V.grad = None
+            loss = torch.sum((torch.matmul(U, V) - weight) ** 2)
+            loss.backwards()
+            with torch.no_grad():
+                U -= me_lr * U.grad
+                V -= me_lr * V.grad
         except Exception as e:
             print("Error occured: ", e)
             break
     w_approx = torch.matmul(U, V)
+    print(torch.sum((w_approx- weight) ** 2))
     return w_approx

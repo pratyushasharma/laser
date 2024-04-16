@@ -2,7 +2,7 @@ import torch
 
 from copy import deepcopy
 from laser.abstract_laser import AbstractLaser
-from laser.matrix_utils import do_low_rank, sorted_mat, prune
+from laser.matrix_utils import do_low_rank, sorted_mat, prune, do_UV_approximation, rank
 
 
 class GPTJLaser(AbstractLaser):
@@ -126,6 +126,12 @@ class GPTJLaser(AbstractLaser):
             elif intervention == 'zero':
                 mat_analysis_tensor = deepcopy(param)
                 mat_analysis = 0.0 * mat_analysis_tensor.type(torch.float32)
+
+            elif intervention == 'UV':
+                mat_analysis_tensor = deepcopy(param)
+                r = rank(mat_analysis_tensor.type(torch.float32))
+                mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), r)
+
             else:
                 raise AssertionError(f"Unhandled intervention type {intervention}")
 

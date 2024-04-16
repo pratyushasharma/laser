@@ -62,8 +62,11 @@ def do_UV_approximation(weight, r, me_lr=0.001, n_iter=1000):
     assert weight.ndim == 2
     m = weight.shape[0]
     n = weight.shape[1]
-    U = torch.rand(m, r, dtype=torch.float32) * 2 - 1
-    V = torch.rand(r, n, dtype=torch.float32) * 2 - 1
+    m = int(m)
+    r = int(r)
+    n = int(n)
+    U = torch.rand((m, r), dtype=torch.float32) * 2 - 1
+    V = torch.rand((r, n), dtype=torch.float32) * 2 - 1
     for _ in range(n_iter):
         try:
             diff_doubled = 2 * (torch.matmul(U, V) - weight)

@@ -62,15 +62,15 @@ def do_UV_approximation(weight, r, me_lr=0.001, n_iter=1000):
     assert weight.ndim == 2
     m = weight.shape[0]
     n = weight.shape[1]
-    U = np.random.rand(m, r).astype(np.float32) * 2 - 1
-    V = np.random.rand(r, n).astype(np.float32) * 2 - 1
+    U = torch.rand(m, r, dtype=torch.float32) * 2 - 1
+    V = torch.rand(r, n, dtype=torch.float32) * 2 - 1
     for _ in range(n_iter):
         try:
-            diff_doubled = 2 * (np.dot(U, V) - weight)
-            U = U - me_lr * np.dot(diff_doubled, V.T)
-            V = V - me_lr * np.dot(U.T, diff_doubled)
+            diff_doubled = 2 * (torch.matmul(U, V) - weight)
+            U = U - me_lr * torch.matmul(diff_doubled, V.t())
+            V = V - me_lr * torch.matmul(U.t(), diff_doubled)
         except Exception as e:
             print("Error occured: ", e)
             break
-    w_approx = np.dot(U, V)
+    w_approx = torch.matmul(U, V)
     return w_approx

@@ -129,7 +129,8 @@ class GPTJLaser(AbstractLaser):
 
             elif intervention == 'UV':
                 mat_analysis_tensor = deepcopy(param)
-                r = rank(mat_analysis_tensor.type(torch.float32))
+                detached = mat_analysis_tensor.detach()
+                r = rank(detached)
                 mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), r)
 
             else:

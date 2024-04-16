@@ -78,7 +78,7 @@ def do_UV_approximation(weight, r, me_lr=0.001, n_iter=250):
             U.grad = None
             V.grad = None
             loss = torch.sum((torch.matmul(U, V) - weight) ** 2)
-            loss.backwards()
+            loss.backward()
             with torch.no_grad():
                 U -= me_lr * U.grad
                 V -= me_lr * V.grad

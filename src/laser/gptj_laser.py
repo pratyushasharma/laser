@@ -130,9 +130,9 @@ class GPTJLaser(AbstractLaser):
 
             elif intervention == 'UV':
                 mat_analysis_tensor = deepcopy(param)
-                detached = mat_analysis_tensor.detach().cpu().numpy().astype(np.float32)
-                r = rank(detached)
-                mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), r)
+                #detached = mat_analysis_tensor.detach().cpu().numpy().astype(np.float32)
+                #r = rank(detached)
+                mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), 100)
 
             else:
                 raise AssertionError(f"Unhandled intervention type {intervention}")

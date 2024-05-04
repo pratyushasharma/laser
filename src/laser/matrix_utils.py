@@ -1,7 +1,8 @@
 import torch
+from torch import optim
 import numpy as np
 import matplotlib.pyplot as plt
-
+from tqdm import tqdm
 
 # Helper functions for abs weight pruning
 def sorted_mat(matrix):
@@ -58,7 +59,8 @@ def do_low_rank(weight, k, debug=False, niter=2):
 
     return weight_approx
 
-def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=1000):
+def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=300):
+    #TODO: try pytorch's opt
     assert weight.ndim == 2
     m = weight.shape[0]
     n = weight.shape[1]
@@ -73,18 +75,26 @@ def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=1000):
     V = torch.rand((r, n), dtype=torch.float32) * 2 - 1
     U.requires_grad_()
     V.requires_grad_()
-    for _ in range(n_iter):
+    optimizer = optim.SGD([U, V], lr=me_lr, momentum=5, nesterov=True)
+    optimizer.zero_grad()
+    bar = tqdm(range(n_iter))
+    for _ in bar:
         try:
-            U.grad = None
-            V.grad = None
+            #U.grad = None
+            #V.grad = None
             loss = torch.sum((torch.matmul(U, V) - weight) ** 2)
+            bar.set_postfix({'loss': loss})
             loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            '''
             with torch.no_grad():
                 U -= me_lr * U.grad
                 V -= me_lr * V.grad
+            '''
         except Exception as e:
             print("Error occured: ", e)
             break
     w_approx = torch.matmul(U, V)
-    print(torch.sum((w_approx- weight) ** 2))
+    #print(torch.sum((w_approx- weight) ** 2))
     return w_approx

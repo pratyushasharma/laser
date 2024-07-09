@@ -7,7 +7,7 @@ from intervention.matrix_utils import prune, sorted_mat, do_low_rank
 class AbstractIntervention:
 
     def __init__(self):
-        pass
+        self.name = "None"
 
     @staticmethod
     def get_parameter(model, name):
@@ -31,6 +31,9 @@ class AbstractIntervention:
         """
         raise NotImplementedError()
 
+    def __str__(self):
+        return self.name
+
 
 class Laser(AbstractIntervention):
 
@@ -39,6 +42,7 @@ class Laser(AbstractIntervention):
         self.lname = lname
         self.lnum = lnum
         self.rho = rho
+        self.name = f"LASER(lname={self.lname}, lnum={self.lnum}, rho={self.rho})"
 
     def apply_intervention(self, model, in_place, layer_name_map):
 
@@ -55,6 +59,9 @@ class Laser(AbstractIntervention):
 
         self.update_model(model_edit, param_name, mat_analysis)
 
+    def __str__(self):
+        return self.name
+
 
 class Pruning(AbstractIntervention):
 
@@ -63,6 +70,7 @@ class Pruning(AbstractIntervention):
         self.lname = lname
         self.lnum = lnum
         self.rho = rho
+        self.name = f"Pruning(lname={self.lname}, lnum={self.lnum}, rho={self.rho})"
 
     def apply_intervention(self, model, in_place, layer_name_map):
 
@@ -82,6 +90,9 @@ class Pruning(AbstractIntervention):
 
         self.update_model(model_edit, param_name, mat_analysis)
 
+    def __str__(self):
+        return self.name
+
 
 class Zero(AbstractIntervention):
 
@@ -89,6 +100,7 @@ class Zero(AbstractIntervention):
         super().__init__()
         self.lname = lname
         self.lnum = lnum
+        self.name = f"Zero(lname={self.lname}, lnum={self.lnum})"
 
     def apply_intervention(self, model, in_place, layer_name_map):
 
@@ -105,16 +117,22 @@ class Zero(AbstractIntervention):
 
         self.update_model(model_edit, param_name, mat_analysis)
 
+    def __str__(self):
+        return self.name
+
 
 class CompoundIntervention(AbstractIntervention):
 
     def __init__(self, interventions):
         super().__init__()
         self.interventions = interventions
+
         for intervention in self.interventions:
             assert issubclass(type(intervention), AbstractIntervention), \
                 (f"Interventions must be of a subclass of {AbstractIntervention}. "
                  f"For intervention of type {type(intervention)}.")
+
+        self.name = "+".join([str(intervention) for intervention in interventions])
 
     def apply_intervention(self, model, in_place, layer_name_map):
 
@@ -127,3 +145,6 @@ class CompoundIntervention(AbstractIntervention):
             model_edit = intervention.apply_intervention(model_edit, in_place=True, layer_name_map=layer_name_map)
 
         return model
+
+    def __str__(self):
+        return self.name

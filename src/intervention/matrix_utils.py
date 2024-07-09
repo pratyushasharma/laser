@@ -10,9 +10,9 @@ def sorted_mat(matrix):
     return temp
 
 
-def prune(matrix, mat_sort, to_prune):
-    if to_prune != 0:
-        alpha = mat_sort[int(to_prune * 0.1 * len(mat_sort))]
+def prune(matrix, mat_sort, rho):
+    if rho != 0:
+        alpha = mat_sort[int(rho * len(mat_sort))]
         matrix[abs(matrix) <= alpha] = 0
     return matrix
 
@@ -36,11 +36,11 @@ def viz_rank_change(rank_list,name):
 
 
 # Helper functions for rank reduction
-def do_low_rank(weight, k, debug=False, niter=2):
+def do_low_rank(weight, rho, is_compress, debug=False, niter=2):
     assert weight.ndim == 2
 
     max_rank = min(weight.shape[0], weight.shape[1])
-    desired_rank = int(max_rank * k)
+    desired_rank = int(max_rank * rho)
 
     if debug:
         print(f"Shape is {weight.shape} and shape is {weight.dtype} => desired rank {desired_rank}")

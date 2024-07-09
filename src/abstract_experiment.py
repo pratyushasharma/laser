@@ -65,8 +65,6 @@ class AbstractExperiment:
         # Make the dataset
         self.logger.log("Creating the dataset.")
         dataset, choices = self.setup.dataset_util.get_dataset()
-        tune_set = dataset["tune"]
-        test_set = dataset["test"]
         self.logger.log("Dataset created.")
 
         # Evaluate the model. We make two decisions
@@ -97,20 +95,19 @@ class AbstractExperiment:
                                                   choices=choices)
 
                 # Calculate accuracy
+                acc = np.mean([1.0 if prediction["correct"] else 0.0 for prediction in predictions]) * 100.0
+                results_dict[split_name] = acc
 
                 # Save results and terminate
                 # self.terminate_and_save(predictions)
-
-                results_dict[split_name] = acc
 
             stats.append(results_dict)
 
         # Test on the test set
         pass
 
-        # Return summary statistics
-
-        return stats
+        # Save summary statistics
+        pass
 
     def evaluate_model(self, model, tokenizer, dataset, choices):
 

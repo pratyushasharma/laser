@@ -37,11 +37,12 @@ class AbstractIntervention:
 
 class Laser(AbstractIntervention):
 
-    def __init__(self, lname, lnum, rho):
+    def __init__(self, lname, lnum, rho, is_compress=True):
         super().__init__()
         self.lname = lname
         self.lnum = lnum
         self.rho = rho
+        self.is_compress = is_compress
         self.name = f"LASER(lname={self.lname}, lnum={self.lnum}, rho={self.rho})"
 
     def apply_intervention(self, model, in_place, layer_name_map):
@@ -55,7 +56,11 @@ class Laser(AbstractIntervention):
         param = self.get_parameter(model, param_name)
 
         mat_analysis_tensor = deepcopy(param)
-        mat_analysis = do_low_rank(mat_analysis_tensor.type(torch.float32), (10 - rate) * 0.1)
+        # TODO implement compress linear layers
+        # To do this, we need to find the linear layer containing this matrix
+        mat_analysis = do_low_rank(weight=mat_analysis_tensor.type(torch.float32),
+                                   rho=self.rho,
+                                   is_compress=self.is_compress)
 
         self.update_model(model_edit, param_name, mat_analysis)
 
@@ -85,7 +90,7 @@ class Pruning(AbstractIntervention):
         mat_analysis = param.detach().numpy().copy()
         mat_sort = sorted_mat(mat_analysis)
 
-        mat_analysis = prune(mat_analysis, mat_sort, rate)  # pruned_mat
+        mat_analysis = prune(mat_analysis, mat_sort, self.rho)  # pruned_mat
         mat_analysis = torch.from_numpy(mat_analysis)
 
         self.update_model(model_edit, param_name, mat_analysis)

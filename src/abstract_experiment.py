@@ -7,7 +7,7 @@ from copy import deepcopy
 
 from experiment_header import ExperimentHeader
 from intervention.intervention_wrapper import InterventionWrapper
-from intervention.parse_interventions import InterventionParser
+from intervention.intervention_parser import InterventionParser
 from study_utils.metric_utils import Metrics, DatasetMetrics, ContextAnswerLogProb
 from study_utils.time_utils import elapsed_from_str, Progress
 
@@ -290,6 +290,33 @@ class AbstractExperiment:
 
 
 if __name__ == '__main__':
+
+    # Step 1: Generate header which contains command line arguments.
+    header = ExperimentHeader()
+    setup = header.generate_header()
+    logger = setup.logger
+
+    # Step 2: Create LLM and tokenizer
+    model, llm_tokenizer = setup.llm_util.get_llm_and_tokenizer()
+
+    # Step 3: Read the dataset
+    dataset, choices = setup.dataset_util.get_dataset()
+    tune_set = dataset["tune"]
+    test_set = dataset["test"]
+
+    # Step 4: Create a list of interventions
+    interventions = InterventionParser(setup).parse_interventions()
+
+    for intervention in interventions:
+
+        # Apply intervention and return an edited model
+        inter
+
+        # Evaluate the intervention on the tune set
+        pass
+
+    # Apply the best intervention to the test set
+    pass
 
     # Step 6: Run intervention
     base_results = None

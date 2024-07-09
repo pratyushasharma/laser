@@ -79,22 +79,40 @@ class ExperimentHeader:
         parser.add_argument("--intervention", type=str, default="LASER",
                             choices=["zero", "pruning", "LASER"],
                             help="what type of intervention to perform. Zero just zero out the matrix. "
-                                 "Pruning zero's out values of the chosen weight matrix(ces) with the "
+                                 "Pruning zeros out values of the chosen weight matrix(ces) with the "
                                  "k-smallest absolute values. LASER performs replaces chosen weight matrix(ces) with "
                                  "their low-rank approximation.")
 
-        # For LASER hyperparameters
+        # For intervention hyperparameters
         parser.add_argument("--lname", type=str, default="None",
-                            choices=['k_proj', 'q_proj', 'v_proj', 'out_proj', 'fc_in', 'fc_up', 'fc_out', 'None',
-                                     'dont'],
+                            choices=["k_proj", "q_proj", "v_proj", "out_proj", "fc_in", "fc_up", "fc_out", "None",
+                                     "dont"],
                             help="provided which type of parameters to effect")
-        parser.add_argument("--lnum", type=int, default=27, help='Layers to edit', choices=list(range(-1, 28)))
-        parser.add_argument("--rho", type=float, default=1, help='rates for intervention')
+        parser.add_argument("--lnum", type=int, default=27, help="Layers to edit", choices=list(range(-1, 100)))
+        parser.add_argument("--rho", type=float, default=1, help="rates for intervention")
+
+        parser.add_argument("--intervention-read",
+                            type=str,
+                            default="cross",
+                            choices=["cross", "sequential"],
+                            help="when multiple intervention hyperparameters are provided then this decides"
+                                 "whether we find interventions via cross-product (cross) of hyperparameter values "
+                                 "or whether we treat them sequentially (sequential).")
+
+        parser.add_argument("--combination",
+                            type=str,
+                            default="separate",
+                            choices=["separate", "together"],
+                            help="when multiple intervention hyperparameters are provided then this decides"
+                                 "whether we do a evaluate them separately (separate), "
+                                 "or apply them all at once (together).")
+
         parser.add_argument("--in_place", action="store_true", help="if true, then interventions "
                                                                     "are directly done on the model")
 
+
         # Hyperparameters related to memory and speed
-        parser.add_argument("--compress", action="store_true", help="if true, then compress matrices")
+        parser.add_argument("--compress", action="store_true", help="if true, then compress memory used by matrices")
 
         # Dataset hyperparameters
         parser.add_argument("--dataset", type=str, default="causal_judgement", help="dataset name to run on")
@@ -103,15 +121,15 @@ class ExperimentHeader:
         parser.add_argument("--split", type=str, default="causal_judgement", help="split of the dataset")
 
         # Evaluation hyperparameters
-        parser.add_argument('--sample_size', type=int, default=817, help='# samples per instruction')
-        parser.add_argument('--batch_size', type=int, default=256, help='batch size for evaluation')
-        parser.add_argument('--max_len', type=int, default=10, help='maximum length for generation')
-        parser.add_argument('--k', type=int, default=10, help='top k for evaluation')
+        parser.add_argument("--sample_size", type=int, default=817, help="# samples per instruction")
+        parser.add_argument("--batch_size", type=int, default=256, help="batch size for evaluation")
+        parser.add_argument("--max_len", type=int, default=10, help="maximum length for generation")
+        parser.add_argument("--k", type=int, default=10, help="top k for evaluation")
 
         # Logging hyperparameters
-        parser.add_argument('--home_dir', type=str,
+        parser.add_argument("--home_dir", type=str,
                             default="./results",
-                            help='Directory where the data is')
+                            help="Directory where the data is")
 
         args = parser.parse_args()
 

@@ -3,10 +3,8 @@ import torch
 import pickle
 import numpy as np
 from tqdm import tqdm
-from copy import deepcopy
 
 from experiment_header import ExperimentHeader
-from intervention.intervention_wrapper import InterventionWrapper
 from intervention.intervention_parser import InterventionParser
 from study_utils.metric_utils import Metrics, DatasetMetrics, ContextAnswerLogProb
 from study_utils.time_utils import elapsed_from_str, Progress
@@ -30,24 +28,20 @@ class Results:
 
 class AbstractExperiment:
 
-    def __init__(self, save_dir, logger):
+    def __init__(self):
 
         header_util = ExperimentHeader()
         self.setup = header_util.generate_header()
 
-        self.save_dir = save_dir
+        self.save_dir = self.setup.save_dir
         self.logger = self.setup.logger
         self.args = self.setup.args
 
-        self.llm = None
-        self.tokenizer = None
-        self.dataset = None
-
         # Parse the list of interventions to perform
-        self.interventions = InterventionParser(setup=self.setup).create_grid_search_interventions()
+        self.interventions = InterventionParser(setup=self.setup).parse_interventions()
 
         # Object to measure progress (as in time taken and time left to complete)
-        self.progress = Progress(logger=logger)
+        self.progress = Progress(logger=self.logger)
 
         # Object to compute metrics. We set whether we should consider whitespace and lowercase when evaluating
         self.case_sensitive = False
@@ -55,7 +49,7 @@ class AbstractExperiment:
         self.metrics = Metrics(case_sensitive=self.case_sensitive, strip=self.strip)
 
         # Object to aggregate performance over a dataset
-        self.dataset_metric = DatasetMetrics(logger=logger)
+        self.dataset_metric = DatasetMetrics(logger=self.logger)
 
         # Device for the experiment
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -65,28 +59,31 @@ class AbstractExperiment:
         self.logger.log(f"Starting a new experiment. LLM Name: {self.args.llm_name}, Dataset {self.args.dataset}.")
 
         # Make the LLM and dataset
-        self.llm, self.tokenizer = self.setup.llm_util.get_llm_and_tokenizer()
+        # TODO: return layer_name_map
+        model, tokenizer, layer_name_map = self.setup.llm_util.get_llm_and_tokenizer()
 
         # Make the dataset
         self.logger.log("Creating the dataset.")
         dataset, choices = self.setup.dataset_util.get_dataset()
+        tune_set = dataset["tune"]
+        test_set = dataset["test"]
         self.logger.log("Dataset created.")
 
         # Evaluate the model. We make two decisions
         # - either to do grid search or evaluate all provided intervention(s) at once
         # - evaluate on the entire dataset or do selection based on validation
         #   (and evaluate on test only if validation performance improves)
-
         for intervention in self.interventions:
 
-            # Perform intervention
+            # Apply intervention and return an edited model
             time_edit_start = time.time()
-            model_edit = InterventionWrapper.get_edited_model(model=model,
-                                                              intervention=intervention,
-                                                              logger=self.logger)
+            edited_model = intervention.apply_intervention(model=model,
+                                                           in_place=self.args.in_place,
+                                                           layer_name_map=layer_name_map)
 
-            model_edit.to(self.device)
-            self.logger.log(f"Edited and put model on {model_edit.device} in time {elapsed_from_str(time_edit_start)}")
+            edited_model.to(self.device)
+            self.logger.log(f"Edited and put model on {edited_model.device} in time "
+                            f"{elapsed_from_str(time_edit_start)}")
 
             # Evaluate the model
             for split_name, split_datapoints in dataset.items():
@@ -99,6 +96,12 @@ class AbstractExperiment:
 
             # Save results and terminate
             self.terminate_and_save(predictions)
+
+        # Test on the test set
+        pass
+
+        # Return summary statistics
+        pass
 
     def evaluate_model(self, model, dataset, choices):
 
@@ -289,87 +292,8 @@ class AbstractExperiment:
                        test_logloss=test_logloss)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    # Step 1: Generate header which contains command line arguments.
-    header = ExperimentHeader()
-    setup = header.generate_header()
-    logger = setup.logger
-
-    # Step 2: Create LLM and tokenizer
-    model, llm_tokenizer = setup.llm_util.get_llm_and_tokenizer()
-
-    # Step 3: Read the dataset
-    dataset, choices = setup.dataset_util.get_dataset()
-    tune_set = dataset["tune"]
-    test_set = dataset["test"]
-
-    # Step 4: Create a list of interventions
-    interventions = InterventionParser(setup).parse_interventions()
-
-    for intervention in interventions:
-
-        # Apply intervention and return an edited model
-        inter
-
-        # Evaluate the intervention on the tune set
-        pass
-
-    # Apply the best intervention to the test set
-    pass
-
-    # Step 6: Run intervention
-    base_results = None
-    best_results = None
-    best_lnum = None
-    best_lname = None
-    best_rate = None
-
-    # for lnum in [-1, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17]:
-    for lnum in [-1, 31, 30, 29, 28, 27]:
-
-        if lnum == -1:
-            lnames = ["dont"]
-            rates = [9.9]
-        else:
-            lnames = ["fc_in", "fc_out"]
-            rates = [8.0, 9.0, 9.5, 9.9, 9.95]
-            # rates = [1.0, 2.0, 4.0, 6.0, 8.0, 9.0, 9.5, 9.9, 9.95]
-
-        for lname in lnames:
-            for rate in reversed(rates):
-
-                args.lnum = lnum
-                args.lname = lname
-                args.rate = rate
-                model = deepcopy(base_model)
-                predictions = experiment.intervene(model=model,
-                                                   tokenizer=tokenizer,
-                                                   dataset=dataset,
-                                                   args=args,
-                                                   llm_name=llm_name,
-                                                   choices=choices)
-
-                results = experiment.validate(predictions, split=0.2)
-
-                if lname == "dont":
-                    base_results = results
-                    logger.log(f"Base Llama2 => {results.to_str()}")
-                else:
-                    logger.log(f"Llama2 => Layer number: {lnum}, Layer name {lname}, Rate {rate} => "
-                               f"{results.to_str()}")
-                    if best_results is None or \
-                            (results.val_acc > best_results.val_acc) or \
-                            (results.val_acc == best_results.val_acc and results.val_logloss < best_results.val_logloss):
-
-                        best_results = results
-                        best_lnum = lnum
-                        best_lname = lname
-                        best_rate = rate
-
-                    logger.log(f"Base model results {base_results.to_str()}. "
-                               f"Best results {best_results.to_str()} at "
-                               f"layer: {best_lnum}, lname: {best_lnum}, rate: {best_rate}")
-                    logger.log("=============")
-
-    logger.log("Experimented Completed.")
+    # Create and run an experiment
+    experiment = AbstractExperiment()
+    experiment.run()

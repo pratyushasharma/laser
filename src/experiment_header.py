@@ -107,7 +107,7 @@ class ExperimentHeader:
                                  "whether we do a evaluate them separately (separate), "
                                  "or apply them all at once (together).")
 
-        parser.add_argument("--in_place", action="store_true", help="if true, then interventions "
+        parser.add_argument("--in-place", action="store_true", help="if true, then interventions "
                                                                     "are directly done on the model")
 
 

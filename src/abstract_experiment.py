@@ -73,6 +73,8 @@ class AbstractExperiment:
         # - either to do grid search or evaluate all provided intervention(s) at once
         # - evaluate on the entire dataset or do selection based on validation
         #   (and evaluate on test only if validation performance improves)
+        stats = []
+
         for intervention in self.interventions:
 
             # Apply intervention and return an edited model
@@ -86,31 +88,38 @@ class AbstractExperiment:
                             f"{elapsed_from_str(time_edit_start)}")
 
             # Evaluate the model
+            results_dict = {"intervention": str(intervention)}
             for split_name, split_datapoints in dataset.items():
 
-                predictions = self.evaluate_model(model=model_edit,
+                predictions = self.evaluate_model(model=edited_model,
+                                                  tokenizer=tokenizer,
                                                   dataset=split_datapoints,
                                                   choices=choices)
 
                 # Calculate accuracy
 
-            # Save results and terminate
-            self.terminate_and_save(predictions)
+                # Save results and terminate
+                # self.terminate_and_save(predictions)
+
+                results_dict[split_name] = acc
+
+            stats.append(results_dict)
 
         # Test on the test set
         pass
 
         # Return summary statistics
-        pass
 
-    def evaluate_model(self, model, dataset, choices):
+        return stats
+
+    def evaluate_model(self, model, tokenizer, dataset, choices):
 
         assert type(dataset) == list, f"Dataset must be a list, found {type(dataset)}."
         dataset_size = len(dataset)
 
         predictions = []
 
-        choice_token_ids = self.get_choice_tokens(choices, self.tokenizer)
+        choice_token_ids = self.get_choice_tokens(choices, tokenizer)
         if choice_token_ids is None:
             single_token_choices = False
             self.logger.log(f"Set of choices {choices} is a multi-token set.")
@@ -138,12 +147,14 @@ class AbstractExperiment:
                     is_correct, log_prob_results = self.single_token_eval(prompt=prompt,
                                                                           label=label,
                                                                           model_edit=model,
+                                                                          tokenizer=tokenizer,
                                                                           choices=choices,
                                                                           choice_token_ids=choice_token_ids)
                 else:
                     is_correct, log_prob_results = self.multi_token_eval(prompt=prompt,
                                                                          label=label,
                                                                          model_edit=model,
+                                                                         tokenizer=tokenizer,
                                                                          choices=choices)
 
             # We compute 0-1 match, f1, precision, and recall score in addition to log-prob of the answer tokens
@@ -188,9 +199,9 @@ class AbstractExperiment:
 
         return choice_token_ids
 
-    def single_token_eval(self, prompt, label, model_edit, choices, choice_token_ids):
+    def single_token_eval(self, prompt, label, model_edit, tokenizer, choices, choice_token_ids):
 
-        input_and_answer = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        input_and_answer = tokenizer(prompt, return_tensors="pt").to(self.device)
 
         # Generate from the model
         # Compute log probability of question + answer
@@ -212,13 +223,13 @@ class AbstractExperiment:
 
         return is_correct, log_prob_results
 
-    def multi_token_eval(self, prompt, label, model_edit, choices):
+    def multi_token_eval(self, prompt, label, model_edit, tokenizer, choices):
 
         all_log_prob_results = []
 
         for choice in choices:
 
-            input_and_answer = self.tokenizer(prompt + " " + choice, return_tensors="pt").to(self.device)
+            input_and_answer = tokenizer(prompt + " " + choice, return_tensors="pt").to(self.device)
 
             # Generate from the model
             # Compute log probability of question + answer

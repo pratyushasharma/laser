@@ -110,7 +110,6 @@ class ExperimentHeader:
         parser.add_argument("--in-place", action="store_true", help="if true, then interventions "
                                                                     "are directly done on the model")
 
-
         # Hyperparameters related to memory and speed
         parser.add_argument("--compress", action="store_true", help="if true, then compress memory used by matrices")
 
